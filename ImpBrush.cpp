@@ -50,7 +50,7 @@ void ImpBrush::SetColor (const Point source)
 	memcpy ( color, pDoc->GetOriginalPixel( source ), 3 );
 	
 	color[3] = GLubyte(pDoc->m_pUI->getAlpha() * 255);
-	printf("Alpha: %.02f", pDoc->m_pUI->getAlpha() * 255);
+	// printf("Alpha: %.02f", pDoc->m_pUI->getAlpha() * 255);
 	// glColor3ubv( color );
 	glColor4ubv(color);
 }
