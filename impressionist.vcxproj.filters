@@ -39,7 +39,11 @@
     <ClCompile Include="PointBrush.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="CircleBrush.cpp">
+=======
+    <ClCompile Include="LineBrush.cpp">
+>>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,7 +72,11 @@
     <ClInclude Include="PointBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="CircleBrush.h">
+=======
+    <ClInclude Include="LineBrush.h">
+>>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,8 +14,12 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
+<<<<<<< HEAD
 #include "CircleBrush.h"
 
+=======
+#include "LineBrush.h"
+>>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -37,7 +41,7 @@ ImpressionistDoc::ImpressionistDoc()
 
 	// Note: You should implement these 5 brushes.  They are set the same (PointBrush) for now
 	ImpBrush::c_pBrushes[BRUSH_LINES]				
-		= new PointBrush( this, "Lines" );
+		= new LineBrush( this, "Lines" );
 	ImpBrush::c_pBrushes[BRUSH_CIRCLES]				
 		= new CircleBrush(this, "Circles");
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_POINTS]	
@@ -50,7 +54,13 @@ ImpressionistDoc::ImpressionistDoc()
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
 
+<<<<<<< HEAD
 }
+=======
+	// Set the stroke direction
+	m_pStrokeDirection = STROKE_DIRECTION_SLIDER;
+}
+>>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
 
 
 //---------------------------------------------------------
@@ -76,6 +86,14 @@ char* ImpressionistDoc::getImageName()
 void ImpressionistDoc::setBrushType(int type)
 {
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[type];
+}
+
+void ImpressionistDoc::setBrushStrokeDirection(int direction) {
+	m_pStrokeDirection = direction;
+}
+
+int ImpressionistDoc::getBrushStrokeDirection() {
+	return m_pStrokeDirection;
 }
 
 //---------------------------------------------------------
