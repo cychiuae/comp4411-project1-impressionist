@@ -50,13 +50,10 @@ ImpressionistDoc::ImpressionistDoc()
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
 
-<<<<<<< HEAD
-}
-=======
+
 	// Set the stroke direction
 	m_pStrokeDirection = STROKE_DIRECTION_SLIDER;
 }
->>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
 
 
 //---------------------------------------------------------
