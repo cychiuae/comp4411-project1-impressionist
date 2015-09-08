@@ -1,5 +1,6 @@
 #ifndef IMPBRUSH_H
 #define IMPBRUSH_H
+#define MAX_RANDOM_SCATTED_NUM 10
 
 //
 // ImpBrush.h
