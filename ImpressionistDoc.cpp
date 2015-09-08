@@ -14,12 +14,8 @@
 
 // Include individual brush headers here.
 #include "PointBrush.h"
-<<<<<<< HEAD
 #include "CircleBrush.h"
-
-=======
 #include "LineBrush.h"
->>>>>>> 7d83f37ed2ce79d83d428147f964e2bd8d613d71
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
