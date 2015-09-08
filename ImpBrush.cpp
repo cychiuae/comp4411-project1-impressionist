@@ -3,7 +3,7 @@
 //
 // The implementation of virtual brush. All the other brushes inherit from it.
 //
-
+//
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
 #include "ImpBrush.h"
