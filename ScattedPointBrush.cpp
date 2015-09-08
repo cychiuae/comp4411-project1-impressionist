@@ -40,8 +40,6 @@ void ScattedPointBrush::BrushMove(const Point source, const Point target)
 		glVertex2d(randX, randY);
 		glEnd();
 	}
-
-	
 }
 
 void ScattedPointBrush::BrushEnd(const Point source, const Point target)
