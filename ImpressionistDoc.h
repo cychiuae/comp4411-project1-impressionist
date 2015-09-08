@@ -29,6 +29,8 @@ public:
 	void	setSize(int size);				// set the UI size
 	char*	getImageName();					// get the current image name
 	
+	void	setBrushStrokeDirection(int direction);
+	int		getBrushStrokeDirection();
 
 // Attributes
 public:
@@ -47,6 +49,8 @@ public:
 	ImpBrush*			m_pCurrentBrush;	
 	// Size of the brush.
 	int m_nSize;							
+	// Direction of brush
+	int m_pStrokeDirection;
 
 	ImpressionistUI*	m_pUI;
 
