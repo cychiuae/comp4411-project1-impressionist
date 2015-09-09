@@ -42,31 +42,21 @@ void ScatteredCircleBrush::BrushMove( const Point source, const Point target )
 	}
 	
 	int chunk = 24;
-	int radius = pDoc->getSize();
+	int radius = pDoc->getSize() / 2;
 
-	glBegin( GL_POLYGON );
-
-		SetColor( source );
-
-		for (int i = 0; i < irand(5); i++){
-			glBegin(GL_POLYGON);
-			int randx = target.x - radius / 2 + irand(radius);
-			int randy = target.y - radius / 2 + irand(radius);
-			printf("x:%d", randx);
-			printf("y:%d", randy);
-			Point new_point = Point(randx, randy);
-			SetColor(new_point);
-			for(double angle=0; angle< 2 * M_PI; angle+=2 * M_PI/chunk){
-				double x = randx + radius * cos(angle);
-				double y = randy + radius * sin(angle);
-				glVertex2d( x, y );
-			}
-			glEnd();
+	for (int i = 0; i < rand() % 6 + 2; i++){
+		glBegin(GL_POLYGON);
+		int randx = target.x - radius + irand(radius * 2);
+		int randy = target.y - radius + irand(radius * 2);
+		Point new_point = Point(randx, randy);
+		SetColor(new_point);
+		for(double angle=0; angle< 2 * M_PI; angle+=2 * M_PI/chunk){
+			double x = randx + radius * cos(angle);
+			double y = randy + radius * sin(angle);
+			glVertex2d( x, y );
 		}
-
-
-
-	glEnd();
+		glEnd();
+	}
 }
 
 void ScatteredCircleBrush::BrushEnd( const Point source, const Point target )
