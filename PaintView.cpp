@@ -9,7 +9,7 @@
 #include "impressionistUI.h"
 #include "paintview.h"
 #include "ImpBrush.h"
-
+#include <cmath>
 
 #define LEFT_MOUSE_DOWN		1
 #define LEFT_MOUSE_DRAG		2
@@ -37,7 +37,7 @@ PaintView::PaintView(int			x,
 {
 	m_nWindowWidth	= w;
 	m_nWindowHeight	= h;
-
+	rightClickStartingPoint = Point(0, 0);
 }
 
 
@@ -120,15 +120,43 @@ void PaintView::draw()
 			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DOWN:
-
+			rightClickStartingPoint = target;
+			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DRAG:
-
+			RestoreContent();
+			glLineWidth(1);
+			glBegin(GL_LINE);
+				glColor3f(1.0 , 0.0, 0.0);
+				glVertex2d(rightClickStartingPoint.x, rightClickStartingPoint.y);
+				glVertex2d(target.x, target.y);
+			glEnd();
 			break;
 		case RIGHT_MOUSE_UP:
+			RestoreContent();
+
+			if (m_pDoc->m_pCurrentBrush->BrushName() == "Lines" || m_pDoc->m_pCurrentBrush->BrushName() == "Scattered Circles") {
+				int dx = target.x - rightClickStartingPoint.x;
+				int dy = target.y - rightClickStartingPoint.y;
+
+				// Angle
+				if (dx == 0) {
+					m_pDoc->m_pUI->setLineAngle(0);
+				} else {
+					int angle = 360 + (int)(atan2((double)dy, (double)dx) * 180 / M_PI);
+					m_pDoc->m_pUI->setLineAngle(angle);
+				}
+
+				// Size
+				int size = (int)sqrt((dx * dx + dy * dy));
+				if (size >= 40) {
+					m_pDoc->m_pUI->setSize(40);
+				} else {
+					m_pDoc->m_pUI->setSize(size);
+				}
+			}
 
 			break;
-
 		default:
 			printf("Unknown event!!\n");		
 			break;

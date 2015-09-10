@@ -36,7 +36,7 @@ class Point
 public:
 	Point() {};
 	Point(int xx, int yy) { x = xx; y = yy; };
-
+	Point(const Point &point) { x = point.x; y = point.y; }
 	int x, y;
 };
 
