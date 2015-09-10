@@ -37,6 +37,39 @@ void LineBrush::BrushMove(const Point source, const Point target)
 		case STROKE_DIRECTION_SLIDER:
 			angle = dlg->getLineAngle();
 			break;
+		case STROKE_DIRECTION_GRADIENT:
+			int grids[3][3];
+			int sobelXOperator[3][3] = {
+				{ -1, 0, 1 },
+				{ -2, 0, 2 },
+				{ -1, 0, 1 }
+			};
+			int sobelYOperator[3][3] = {
+				{ 1, 2, 1 },
+				{ 0, 0, 0 },
+				{ -1, -2, -1 }
+			};
+			int vectorX = 0, vectorY = 0;
+			for (int row = 0; row < 3; row++) {
+				for (int col = 0; col < 3; col++) {
+					Point point = Point(target.x + row - 1, target.y + col - 1);
+					GLubyte color[3];
+					memcpy(color, pDoc->GetOriginalPixel(point), 3);
+					grids[row][col] = 0.299*color[0] + 0.587*color[1] + 0.114*color[2];
+				}
+			}
+			for (int row = 0; row < 3; row++) {
+				for (int col = 0; col < 3; col++) {
+					vectorX += grids[row][col] * sobelXOperator[row][col];
+					vectorY += grids[row][col] * sobelYOperator[row][col];
+				}
+			}
+			if (vectorX == 0) {
+				angle = 90;
+			} else {
+				angle = (int)(360 + atan2(vectorY, vectorX) * 180 / M_PI);
+			}
+			break;
 	}
 
 	double radianAngle = (angle % 360) * M_PI / 180;

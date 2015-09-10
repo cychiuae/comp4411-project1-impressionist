@@ -141,7 +141,7 @@ void PaintView::draw()
 
 				// Angle
 				if (dx == 0) {
-					m_pDoc->m_pUI->setLineAngle(0);
+					m_pDoc->m_pUI->setLineAngle(90);
 				} else {
 					int angle = 360 + (int)(atan2((double)dy, (double)dx) * 180 / M_PI);
 					m_pDoc->m_pUI->setLineAngle(angle);
