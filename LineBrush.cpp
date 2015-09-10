@@ -34,10 +34,11 @@ void LineBrush::BrushMove(const Point source, const Point target)
 
 	int angle = 0;
 	switch (pDoc->getBrushStrokeDirection()) {
-		case STROKE_DIRECTION_SLIDER:
+		case STROKE_DIRECTION_SLIDER: {
 			angle = dlg->getLineAngle();
 			break;
-		case STROKE_DIRECTION_GRADIENT:
+		}
+		case STROKE_DIRECTION_GRADIENT: {
 			int grids[3][3];
 			int sobelXOperator[3][3] = {
 				{ -1, 0, 1 },
@@ -70,8 +71,19 @@ void LineBrush::BrushMove(const Point source, const Point target)
 				angle = (int)(360 + atan2(vectorY, vectorX) * 180 / M_PI);
 			}
 			break;
+		}
+		case STROKE_DIRECTION_BRUSH_DIRECTION: {
+			int dx = source.x - target.x;
+			int dy = source.y - target.y;
+			if (dx == 0) {
+				angle = 90;
+			} else {
+				angle = (int)(360 + atan2(dy, dx) * 180 / M_PI);
+			}
+			break;
+		}
 	}
-
+	printf("%d %d %d %d\n", source.x, target.x, source.y, target.y);
 	double radianAngle = (angle % 360) * M_PI / 180;
 	double sinAngle = sin(radianAngle);
 	double cosAngle = cos(radianAngle);

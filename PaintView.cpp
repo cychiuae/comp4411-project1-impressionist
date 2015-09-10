@@ -27,6 +27,7 @@
 static int		eventToDo;
 static int		isAnEvent=0;
 static Point	coord;
+static Point	startCoord;
 
 PaintView::PaintView(int			x, 
 					 int			y, 
@@ -108,10 +109,12 @@ void PaintView::draw()
 		switch (eventToDo) 
 		{
 		case LEFT_MOUSE_DOWN:
+			startCoord = source;
 			m_pDoc->m_pCurrentBrush->BrushBegin( source, target );
 			break;
 		case LEFT_MOUSE_DRAG:
-			m_pDoc->m_pCurrentBrush->BrushMove( source, target );
+			m_pDoc->m_pCurrentBrush->BrushMove( startCoord, target);
+			startCoord = target;
 			break;
 		case LEFT_MOUSE_UP:
 			m_pDoc->m_pCurrentBrush->BrushEnd( source, target );
