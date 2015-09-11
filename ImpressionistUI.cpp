@@ -219,6 +219,10 @@ void ImpressionistUI::cb_clear_canvas(Fl_Menu_* o, void* v)
 	pDoc->clearCanvas();
 }
 
+void ImpressionistUI::cb_colors(Fl_Menu_ *o, void *v) {
+	whoami(o)->m_colorsDialog->show();
+}
+
 //------------------------------------------------------------
 // Causes the Impressionist program to exit
 // Called by the UI when the quit menu item is chosen
@@ -318,6 +322,16 @@ void ImpressionistUI::cb_alphaSlides(Fl_Widget *o, void *v) {
 	printf("Alpha: %.02f", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
 }
 
+void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {
+	((ImpressionistUI*)(o->user_data()))->m_nRed = double(((Fl_Color_Chooser *)o)->r());
+	((ImpressionistUI*)(o->user_data()))->m_nGreen = double(((Fl_Color_Chooser *)o)->g());
+	((ImpressionistUI*)(o->user_data()))->m_nBlue = double(((Fl_Color_Chooser *)o)->b());
+	printf("Red: %.02f | Green: %.02f | Blue: %.02f\n", 
+		((ImpressionistUI*)(o->user_data()))->m_nRed, 
+		((ImpressionistUI*)(o->user_data()))->m_nGreen, 
+		((ImpressionistUI*)(o->user_data()))->m_nBlue);
+}
+
 //---------------------------------- per instance functions --------------------------------------
 
 //------------------------------------------------
@@ -408,6 +422,18 @@ void ImpressionistUI::setAlpha(double alpha) {
 	}
 }
 
+double ImpressionistUI::getRed() {
+	return m_nRed;
+}
+
+double ImpressionistUI::getGreen() {
+	return m_nGreen;
+}
+
+double ImpressionistUI::getBlue() {
+	return m_nBlue;
+}
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -415,6 +441,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Save Image...",	FL_ALT + 's', (Fl_Callback *)ImpressionistUI::cb_save_image },
 		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
+		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_colors },
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },
 	// TODO: Add menu callback
@@ -489,6 +516,9 @@ ImpressionistUI::ImpressionistUI() {
 	m_nLineWidth = 1;
 	m_nLineAngle = 0;
 	m_nAlpha = 1.0;
+	m_nRed = 1.0;
+	m_nGreen = 1.0;
+	m_nBlue = 1.0;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");
@@ -565,4 +595,11 @@ ImpressionistUI::ImpressionistUI() {
 
     m_brushDialog->end();	
 
+	m_colorsDialog = new Fl_Window(300, 300, "Color Selector");
+	// Add color chooser to the color dialog
+	m_colorChooser = new Fl_Color_Chooser(0, 0, 250, 250, "Color Blending");
+	m_colorChooser->user_data((void *)(this));
+	m_colorChooser->rgb(1.0f, 1.0f, 1.0f);
+	m_colorChooser->callback(cb_colorSelects);
+	m_colorsDialog->end();
 }
