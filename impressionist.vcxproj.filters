@@ -11,11 +11,9 @@
     <ClCompile Include="OriginalView.cpp" />
     <ClCompile Include="PaintView.cpp" />
     <ClCompile Include="PointBrush.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="ScattedPointBrush.cpp" />
-=======
     <ClCompile Include="ScatteredCircleBrush.cpp" />
->>>>>>> a1c9ef1dfc77777794c3259db3b534b67da65943
+    <ClCompile Include="ScatteredLineBrush.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h" />
@@ -28,10 +26,8 @@
     <ClInclude Include="OriginalView.h" />
     <ClInclude Include="PaintView.h" />
     <ClInclude Include="PointBrush.h" />
-<<<<<<< HEAD
     <ClInclude Include="ScattedPointBrush.h" />
-=======
     <ClInclude Include="ScatteredCircleBrush.h" />
->>>>>>> a1c9ef1dfc77777794c3259db3b534b67da65943
+    <ClInclude Include="ScatteredLineBrush.h" />
   </ItemGroup>
 </Project>
