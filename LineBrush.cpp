@@ -53,10 +53,14 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			int vectorX = 0, vectorY = 0;
 			for (int row = 0; row < 3; row++) {
 				for (int col = 0; col < 3; col++) {
+					// should be target.y - col + 1
 					Point point = Point(target.x + row - 1, target.y + col - 1);
 					GLubyte color[3];
 					memcpy(color, pDoc->GetOriginalPixel(point), 3);
 					grids[row][col] = 0.299*color[0] + 0.587*color[1] + 0.114*color[2];
+					// can we combine two double forloop?
+					// vectorX += grids[row][col] * sobelXOperator[row][col];
+					// vectorY += grids[row][col] * sobelYOperator[row][col];
 				}
 			}
 			for (int row = 0; row < 3; row++) {
