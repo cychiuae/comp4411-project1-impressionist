@@ -16,6 +16,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Color_Chooser.H>
+#include <FL/Fl_Check_Button.H>
 
 #include "Impressionist.h"
 #include "OriginalView.h"
@@ -42,6 +43,16 @@ public:
 	Fl_Slider*			m_BrushLineWidthSlider;
 	Fl_Slider*			m_BrushLineAngleSlider;
 	Fl_Slider*			m_BrushAlphaSlider;
+	Fl_Slider*			m_SpaceSlider;
+	Fl_Slider*			m_EdgeThresholdSlider;
+
+	Fl_Light_Button*    m_edge_clipping;
+	Fl_Light_Button*    m_another_gradient;
+
+	Fl_Light_Button*    m_SizeRandButton;
+	Fl_Button*    m_DoItButton;
+	Fl_Button*          m_PaintButton;
+
 
 	Fl_Button*          m_ClearCanvasButton;
 
@@ -81,6 +92,11 @@ private:
 	int		m_nSize;
 	int		m_nLineWidth;
 	int		m_nLineAngle;
+	int     m_nSpace;
+	int     m_nEdgeThreshold;
+	boolean m_is_edge_clipping;
+	boolean m_is_another_gradient;
+	boolean m_is_size_rand;
 	double	m_nAlpha;
 	double	m_nRed;
 	double	m_nGreen;
@@ -108,8 +124,16 @@ private:
 	static void	cb_sizeSlides(Fl_Widget* o, void* v);
 	static void cb_lineWidthSlides(Fl_Widget *o, void *v);
 	static void cb_lineAngleSlides(Fl_Widget *o, void *v);
+	static void cb_spaceSlides(Fl_Widget *o, void *v);
+	static void cb_edgeThresholdSlides(Fl_Widget *o, void *v);
 	static void cb_alphaSlides(Fl_Widget *o, void *v);
 	static void cb_colorSelects(Fl_Widget *o, void *v);
+	static void cb_edge_clipping(Fl_Widget *o, void *v);
+	static void cb_another_gradient(Fl_Widget *o, void *v);
+	static void cb_sizeRand(Fl_Widget *o, void *v);
+	static void cb_paintButton(Fl_Widget *o, void *v);
+	static void cb_doItButton(Fl_Widget *o, void *v);
+
 };
 
 #endif

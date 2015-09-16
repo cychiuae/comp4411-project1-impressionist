@@ -190,6 +190,19 @@ int ImpressionistDoc::clearCanvas()
 	return 0;
 }
 
+void ImpressionistDoc::paintCanvas()
+{
+
+
+
+}
+
+
+void ImpressionistDoc::edgeImage()
+{
+}
+
+
 //------------------------------------------------------------------
 // Get the color of the pixel in the original image at coord x and y
 //------------------------------------------------------------------

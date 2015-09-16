@@ -65,6 +65,9 @@ public:
 private:
 	char			m_imageName[256];
 
+public:
+	void paintCanvas();
+	void edgeImage();
 };
 
 extern void MessageBox(char *message);

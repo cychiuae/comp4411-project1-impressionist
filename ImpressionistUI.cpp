@@ -321,6 +321,59 @@ void ImpressionistUI::cb_alphaSlides(Fl_Widget *o, void *v) {
 	((ImpressionistUI*)(o->user_data()))->m_nAlpha = double(((Fl_Slider *)o)->value());
 	printf("Alpha: %.02f", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
 }
+void ImpressionistUI::cb_spaceSlides(Fl_Widget *o, void *v) {
+	((ImpressionistUI*)(o->user_data()))->m_nSpace = int(((Fl_Slider *)o)->value());
+}
+
+void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget *o, void *v) {
+	((ImpressionistUI*)(o->user_data()))->m_nEdgeThreshold = double(((Fl_Slider *)o)->value());
+}
+
+
+void ImpressionistUI::cb_edge_clipping(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI=((ImpressionistUI*)(o->user_data()));
+
+	if (pUI->m_is_edge_clipping == 1){
+		pUI->m_is_edge_clipping = 0;
+	}else{
+		pUI->m_is_edge_clipping = 1;
+	}
+	//printf("cb_edge_clipping,%d\n", pUI->m_is_edge_clipping);
+}
+
+
+void ImpressionistUI::cb_another_gradient(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI=((ImpressionistUI*)(o->user_data()));
+
+	if (pUI->m_is_another_gradient == 1){
+		pUI->m_is_another_gradient = 0;
+	}else{
+		pUI->m_is_another_gradient = 1;
+	}
+	//printf("cb_another_gradient,%d\n", pUI->m_is_another_gradient);
+}
+
+
+void ImpressionistUI::cb_sizeRand(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI=((ImpressionistUI*)(o->user_data()));
+
+	if (pUI->m_is_size_rand == 1){
+		pUI->m_is_size_rand = 0;
+	}else{
+		pUI->m_is_size_rand = 1;
+	}
+	//printf("cb_sizeRand,%d\n", ((ImpressionistUI*)(o->user_data()))->m_is_size_rand);
+}
+
+void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	pDoc->paintCanvas();
+}
+
+void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	pDoc->edgeImage();
+}
 
 void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {
 	((ImpressionistUI*)(o->user_data()))->m_nRed = double(((Fl_Color_Chooser *)o)->r());
@@ -514,11 +567,16 @@ ImpressionistUI::ImpressionistUI() {
 
 	m_nSize = 10;
 	m_nLineWidth = 1;
+	m_nSpace = 1;
+	m_nEdgeThreshold = 1;
 	m_nLineAngle = 0;
 	m_nAlpha = 1.0;
-	m_nRed = 1.0;
 	m_nGreen = 1.0;
+	m_nRed = 1.0;
 	m_nBlue = 1.0;
+	m_is_edge_clipping = 0;
+	m_is_another_gradient = 0;
+	m_is_size_rand = 0;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");
@@ -592,6 +650,61 @@ ImpressionistUI::ImpressionistUI() {
 		m_BrushAlphaSlider->value(m_nAlpha);
 		m_BrushAlphaSlider->align(FL_ALIGN_RIGHT);
 		m_BrushAlphaSlider->callback(cb_alphaSlides);
+
+		m_edge_clipping = new Fl_Light_Button(10,200,150,25,"&Edge Clipping");
+		m_edge_clipping->user_data((void*)(this));	// record self to be used by static callback functions
+		m_edge_clipping->callback(cb_edge_clipping);
+		
+		m_another_gradient = new Fl_Light_Button(230, 200, 150,  25, "&Another Gradient");
+		m_another_gradient->user_data((void*)(this));	// record self to be used by static callback functions
+		m_another_gradient->callback(cb_another_gradient);
+
+
+		Fl_Group* group2 = new Fl_Group(10, 230, 300, 20);
+
+		m_SpaceSlider = new Fl_Value_Slider(10, 230, 150, 20, "Spacing");
+		m_SpaceSlider->user_data((void *)(this));
+		m_SpaceSlider->type(FL_HOR_NICE_SLIDER);
+		m_SpaceSlider->labelfont(FL_COURIER);
+		m_SpaceSlider->labelsize(12);
+		m_SpaceSlider->minimum(1.0);
+		m_SpaceSlider->maximum(16.0);
+		m_SpaceSlider->step(1.0);
+		m_SpaceSlider->value(m_nSpace);
+		m_SpaceSlider->align(FL_ALIGN_RIGHT);
+		m_SpaceSlider->callback(cb_spaceSlides);
+
+		m_SizeRandButton = new Fl_Light_Button(220, 230, 100,  25, "&Size Rand.");
+		m_SizeRandButton->user_data((void*)(this));	// record self to be used by static callback functions
+		m_SizeRandButton->callback(cb_sizeRand);
+
+		m_PaintButton = new Fl_Button(330,230,50,25,"&Paint");
+		m_PaintButton->user_data((void*)(this));
+		m_PaintButton->callback(cb_paintButton);
+
+		group2->end();
+
+		Fl_Group* group3 = new Fl_Group(10, 260, 250, 20);
+
+		m_EdgeThresholdSlider = new Fl_Value_Slider(10, 260, 200, 25, "Edge Threadhold");
+		m_EdgeThresholdSlider->user_data((void *)(this));
+		m_EdgeThresholdSlider->type(FL_HOR_NICE_SLIDER);
+		m_EdgeThresholdSlider->labelfont(FL_COURIER);
+		m_EdgeThresholdSlider->labelsize(12);
+		m_EdgeThresholdSlider->minimum(0.0);
+		m_EdgeThresholdSlider->maximum(500.0);
+		m_EdgeThresholdSlider->step(1.0);
+		m_EdgeThresholdSlider->value(m_nEdgeThreshold);
+		m_EdgeThresholdSlider->align(FL_ALIGN_RIGHT);
+		m_EdgeThresholdSlider->callback(cb_edgeThresholdSlides);
+
+		m_DoItButton = new Fl_Button(330,260,50,25,"&Do it");
+		m_DoItButton->user_data((void*)(this));
+		m_DoItButton->callback(cb_doItButton);
+
+		group3->end();
+		
+
 
     m_brushDialog->end();	
 
