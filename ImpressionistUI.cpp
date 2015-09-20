@@ -267,12 +267,16 @@ void ImpressionistUI::cb_brushChoice(Fl_Widget* o, void* v)
 			pUI->m_BrushLineWidthSlider->deactivate();
 			pUI->m_BrushLineAngleSlider->deactivate();
 			pUI->m_BrushStrokeDirectionChoice->deactivate();
+			pUI->m_edge_clipping->deactivate();
+			pUI->m_another_gradient->deactivate();
 			break;
 		case BRUSH_LINES:
 		case BRUSH_SCATTERED_LINES:
 			pUI->m_BrushLineWidthSlider->activate();
 			pUI->m_BrushLineAngleSlider->activate();
 			pUI->m_BrushStrokeDirectionChoice->activate();
+			pUI->m_edge_clipping->activate();
+			pUI->m_another_gradient->activate();
 			break;
 		default:
 			break;
@@ -371,8 +375,8 @@ void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 }
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
-	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
-	pDoc->edgeImage();
+	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	pUI->m_origView->edgeImage();
 }
 
 void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {
@@ -584,16 +588,16 @@ ImpressionistUI::ImpressionistUI() {
 
 	m_nSize = 10;
 	m_nLineWidth = 1;
-	m_nSpace = 1;
-	m_nEdgeThreshold = 1;
+	m_nSpace = 4;
+	m_nEdgeThreshold = 200;
 	m_nLineAngle = 0;
 	m_nAlpha = 1.0;
 	m_nGreen = 1.0;
 	m_nRed = 1.0;
 	m_nBlue = 1.0;
-	m_is_edge_clipping = 0;
+	m_is_edge_clipping = 1;
 	m_is_another_gradient = 0;
-	m_is_size_rand = 0;
+	m_is_size_rand = 1;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");
@@ -671,10 +675,13 @@ ImpressionistUI::ImpressionistUI() {
 		m_edge_clipping = new Fl_Light_Button(10,200,150,25,"&Edge Clipping");
 		m_edge_clipping->user_data((void*)(this));	// record self to be used by static callback functions
 		m_edge_clipping->callback(cb_edge_clipping);
+		m_edge_clipping->deactivate();
+		m_edge_clipping->set();
 		
 		m_another_gradient = new Fl_Light_Button(230, 200, 150,  25, "&Another Gradient");
 		m_another_gradient->user_data((void*)(this));	// record self to be used by static callback functions
 		m_another_gradient->callback(cb_another_gradient);
+		m_another_gradient->deactivate();
 
 
 		// Fl_Group* group2 = new Fl_Group(10, 230, 300, 20);
@@ -694,6 +701,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_SizeRandButton = new Fl_Light_Button(220, 230, 100,  25, "&Size Rand.");
 		m_SizeRandButton->user_data((void*)(this));	// record self to be used by static callback functions
 		m_SizeRandButton->callback(cb_sizeRand);
+		m_SizeRandButton->set();
 
 		m_PaintButton = new Fl_Button(330,230,50,25,"&Paint");
 		m_PaintButton->user_data((void*)(this));

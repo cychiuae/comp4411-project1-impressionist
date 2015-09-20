@@ -27,6 +27,8 @@ public:
 	
 	void draw();
 	void refresh();
+	void edgeImage();
+
 
 	void resizeWindow(int width, int height);
 

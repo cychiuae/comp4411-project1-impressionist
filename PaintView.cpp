@@ -17,6 +17,7 @@
 #define RIGHT_MOUSE_DOWN	4
 #define RIGHT_MOUSE_DRAG	5
 #define RIGHT_MOUSE_UP		6
+#define PAINT               7
 
 
 #ifndef WIN32
@@ -105,7 +106,13 @@ void PaintView::draw()
 
 		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
 		Point target( coord.x, m_nWindowHeight - coord.y );
-		
+
+		int width = m_pDoc->m_nWidth;
+		int height = m_pDoc->m_nHeight;
+		int paintHeight = m_pDoc->m_nPaintHeight;
+		int space = m_pDoc->getSpace();
+		int size = m_pDoc->getSize();
+
 		// This is the event handler
 		switch (eventToDo) 
 		{
@@ -158,6 +165,19 @@ void PaintView::draw()
 					m_pDoc->m_pUI->setSize(size);
 				}
 			}
+
+			break;
+		case PAINT:
+
+			for (int i = 0; i < width; i += space + size){
+				for (int j = 0; j < height; j += space + size){
+					Point source(i, m_nWindowHeight - j);
+					Point target(i, m_nDrawHeight - j);
+					m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+				}
+			}
+
+			SaveCurrentContent();
 
 			break;
 		default:
@@ -277,41 +297,8 @@ void PaintView::RestoreContent()
 
 void PaintView::paintCanvas()
 {
-	#ifndef MESA
-	glDrawBuffer(GL_FRONT_AND_BACK);
-	#endif
-	if(!valid())
-	{
-		glClearColor(0.7f, 0.7f, 0.7f, 1.0);
-		glDisable( GL_DEPTH_TEST );
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-		glEnable(GL_LINE_SMOOTH);
-		ortho();
-		glClear( GL_COLOR_BUFFER_BIT );
-	}
 
-	int width = m_pDoc->m_nWidth;
-	int height = m_pDoc->m_nHeight;
-	int paintHeight = m_pDoc->m_nPaintHeight;
-
-	// int i = rand() % width;
-	// int j = rand() % height;
-	int space = m_pDoc->getSpace();
-	for (int i = 0; i < width; i+=space){
-		for (int j = 0; j < height; j+=space){
-			Point source( i, height - j );
-			Point target( i, paintHeight - j );
-			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);	
-		}
-	}
+	eventToDo = PAINT;
+	isAnEvent = 1;
 	
-	
-	SaveCurrentContent();
-	RestoreContent();
-	glFlush();
-
-	#ifndef MESA
-	glDrawBuffer(GL_BACK);
-	#endif
 }

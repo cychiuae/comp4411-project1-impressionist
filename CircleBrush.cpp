@@ -61,20 +61,6 @@ void CircleBrush::BrushMove( const Point source, const Point target )
 
 	glEnd();
 
-	// Point source2(50,50);
-	// Point target2(50,50);
-	
-	// glBegin( GL_POLYGON );
-
-	// 	SetColor( source2 );
-
-	// 	for(double angle=0; angle< 2 * M_PI; angle+=2 * M_PI/chunk){
-	// 		double x = target2.x + radius * cos(angle);
-	// 		double y = target2.y + radius * sin(angle);
-	// 		glVertex2d( x, y );
-	// 	}
-
-	// glEnd();
 
 }
 

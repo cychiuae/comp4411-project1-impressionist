@@ -72,7 +72,6 @@ private:
 	char			m_imageName[256];
 
 public:
-	void edgeImage();
 };
 
 extern void MessageBox(char *message);
