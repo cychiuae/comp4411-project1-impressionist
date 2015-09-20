@@ -101,6 +101,23 @@ int ImpressionistDoc::getSize()
 	return m_pUI->getSize();
 }
 
+boolean ImpressionistDoc::getIsRandSize(){
+	return m_pUI->getIsRandSize();
+}
+
+int ImpressionistDoc::getSpace(){
+	return m_pUI->getSpace();
+}
+int ImpressionistDoc::getEdgeThreshold(){
+	return m_pUI->getEdgeThreshold();
+}
+boolean ImpressionistDoc::getIsEdgeClipping(){
+	return m_pUI->getIsEdgeClipping();
+}
+boolean ImpressionistDoc::getIsAnotherGradient(){
+	return m_pUI->getIsAnotherGradient();
+}
+
 //---------------------------------------------------------
 // Load the specified image
 // This is called by the UI when the load image button is 
@@ -188,13 +205,6 @@ int ImpressionistDoc::clearCanvas()
 	}
 	
 	return 0;
-}
-
-void ImpressionistDoc::paintCanvas()
-{
-
-
-
 }
 
 

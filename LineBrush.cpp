@@ -31,7 +31,9 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	}
 
 	int size = dlg->getSize();
-
+	if(dlg->getIsRandSize()){
+		size =  rand() % dlg->getSize();
+	}
 	int angle = 0;
 	switch (pDoc->getBrushStrokeDirection()) {
 		case STROKE_DIRECTION_SLIDER: {

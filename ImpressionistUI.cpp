@@ -366,8 +366,8 @@ void ImpressionistUI::cb_sizeRand(Fl_Widget *o, void *v) {
 }
 
 void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
-	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
-	pDoc->paintCanvas();
+	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	pUI->m_paintView->paintCanvas();
 }
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
@@ -473,6 +473,23 @@ void ImpressionistUI::setAlpha(double alpha) {
 	if (m_nAlpha <= 1.0) {
 		m_BrushLineAngleSlider->value(m_nAlpha);
 	}
+}
+
+int ImpressionistUI::getSpace(){
+	return m_nSpace;
+}
+int ImpressionistUI::getEdgeThreshold(){
+	return m_nEdgeThreshold;
+}
+boolean ImpressionistUI::getIsEdgeClipping(){
+	return m_is_edge_clipping;
+}
+boolean ImpressionistUI::getIsAnotherGradient(){
+	return m_is_another_gradient;
+}
+
+boolean ImpressionistUI::getIsRandSize(){
+	return m_is_size_rand;
 }
 
 double ImpressionistUI::getRed() {
@@ -660,7 +677,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_another_gradient->callback(cb_another_gradient);
 
 
-		Fl_Group* group2 = new Fl_Group(10, 230, 300, 20);
+		// Fl_Group* group2 = new Fl_Group(10, 230, 300, 20);
 
 		m_SpaceSlider = new Fl_Value_Slider(10, 230, 150, 20, "Spacing");
 		m_SpaceSlider->user_data((void *)(this));
@@ -682,9 +699,9 @@ ImpressionistUI::ImpressionistUI() {
 		m_PaintButton->user_data((void*)(this));
 		m_PaintButton->callback(cb_paintButton);
 
-		group2->end();
+		// group2->end();
 
-		Fl_Group* group3 = new Fl_Group(10, 260, 250, 20);
+		// Fl_Group* group3 = new Fl_Group(10, 260, 250, 20);
 
 		m_EdgeThresholdSlider = new Fl_Value_Slider(10, 260, 200, 25, "Edge Threadhold");
 		m_EdgeThresholdSlider->user_data((void *)(this));
@@ -702,7 +719,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_DoItButton->user_data((void*)(this));
 		m_DoItButton->callback(cb_doItButton);
 
-		group3->end();
+		// group3->end();
 		
 
 

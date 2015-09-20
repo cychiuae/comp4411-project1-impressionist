@@ -28,6 +28,12 @@ public:
 	int		getSize();						// get the UI size
 	void	setSize(int size);				// set the UI size
 	char*	getImageName();					// get the current image name
+
+	int     getSpace();
+	int     getEdgeThreshold();
+	boolean getIsEdgeClipping();
+	boolean getIsAnotherGradient();
+	boolean getIsRandSize();
 	
 	void	setBrushStrokeDirection(int direction);
 	int		getBrushStrokeDirection();
@@ -66,7 +72,6 @@ private:
 	char			m_imageName[256];
 
 public:
-	void paintCanvas();
 	void edgeImage();
 };
 

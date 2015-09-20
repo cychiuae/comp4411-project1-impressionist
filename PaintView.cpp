@@ -75,6 +75,7 @@ void PaintView::draw()
 	int drawWidth, drawHeight;
 	drawWidth = min( m_nWindowWidth, m_pDoc->m_nPaintWidth );
 	drawHeight = min( m_nWindowHeight, m_pDoc->m_nPaintHeight );
+	// printf("win width: %d,paint width: %d\n",m_nWindowWidth,m_pDoc->m_nPaintWidth);
 
 	int startrow = m_pDoc->m_nPaintHeight - (scrollpos.y + drawHeight);
 	if ( startrow < 0 ) startrow = 0;
@@ -118,7 +119,6 @@ void PaintView::draw()
 			break;
 		case LEFT_MOUSE_UP:
 			m_pDoc->m_pCurrentBrush->BrushEnd( source, target );
-
 			SaveCurrentContent();
 			RestoreContent();
 			break;
@@ -273,4 +273,45 @@ void PaintView::RestoreContent()
 				  m_pPaintBitstart);
 
 //	glDrawBuffer(GL_FRONT);
+}
+
+void PaintView::paintCanvas()
+{
+	#ifndef MESA
+	glDrawBuffer(GL_FRONT_AND_BACK);
+	#endif
+	if(!valid())
+	{
+		glClearColor(0.7f, 0.7f, 0.7f, 1.0);
+		glDisable( GL_DEPTH_TEST );
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glEnable(GL_LINE_SMOOTH);
+		ortho();
+		glClear( GL_COLOR_BUFFER_BIT );
+	}
+
+	int width = m_pDoc->m_nWidth;
+	int height = m_pDoc->m_nHeight;
+	int paintHeight = m_pDoc->m_nPaintHeight;
+
+	// int i = rand() % width;
+	// int j = rand() % height;
+	int space = m_pDoc->getSpace();
+	for (int i = 0; i < width; i+=space){
+		for (int j = 0; j < height; j+=space){
+			Point source( i, height - j );
+			Point target( i, paintHeight - j );
+			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);	
+		}
+	}
+	
+	
+	SaveCurrentContent();
+	RestoreContent();
+	glFlush();
+
+	#ifndef MESA
+	glDrawBuffer(GL_BACK);
+	#endif
 }

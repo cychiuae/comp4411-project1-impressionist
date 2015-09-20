@@ -50,10 +50,9 @@ public:
 	Fl_Light_Button*    m_another_gradient;
 
 	Fl_Light_Button*    m_SizeRandButton;
-	Fl_Button*    m_DoItButton;
+	
+	Fl_Button*          m_DoItButton;
 	Fl_Button*          m_PaintButton;
-
-
 	Fl_Button*          m_ClearCanvasButton;
 
 	// for color dialog
@@ -81,6 +80,12 @@ public:
 	double				getAlpha();
 	void				setAlpha(double alpha);
 
+	int                 getSpace();
+	int                 getEdgeThreshold();
+	boolean             getIsRandSize();
+	boolean             getIsEdgeClipping();
+	boolean             getIsAnotherGradient();
+
 	double				getRed();
 	double				getGreen();
 	double				getBlue();
@@ -94,9 +99,11 @@ private:
 	int		m_nLineAngle;
 	int     m_nSpace;
 	int     m_nEdgeThreshold;
+
 	boolean m_is_edge_clipping;
 	boolean m_is_another_gradient;
 	boolean m_is_size_rand;
+
 	double	m_nAlpha;
 	double	m_nRed;
 	double	m_nGreen;

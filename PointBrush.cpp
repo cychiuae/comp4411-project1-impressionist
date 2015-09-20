@@ -23,7 +23,9 @@ void PointBrush::BrushBegin( const Point source, const Point target )
 
 	int size = pDoc->getSize();
 
-
+	if(pDoc->getIsRandSize()){
+		size =  rand() % pDoc->getSize();
+	}
 
 	glPointSize( (float)size );
 

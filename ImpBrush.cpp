@@ -52,6 +52,7 @@ void ImpBrush::SetColor (const Point source)
 	color[1] = GLubyte(pDoc->m_pUI->getGreen() * color[1]);
 	color[2] = GLubyte(pDoc->m_pUI->getBlue() * color[2]);
 	color[3] = GLubyte(pDoc->m_pUI->getAlpha() * 255);
+	// printf("color: %d, %d, %d, %d\n",color[0], color[1], color[2], color[3]);
 	
 	// glColor3ubv( color );
 	glColor4ubv(color);
