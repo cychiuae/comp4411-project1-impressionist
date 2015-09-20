@@ -17,7 +17,6 @@
 #define RIGHT_MOUSE_DOWN	4
 #define RIGHT_MOUSE_DRAG	5
 #define RIGHT_MOUSE_UP		6
-#define PAINT               7
 
 
 #ifndef WIN32
@@ -29,7 +28,7 @@ static int		eventToDo;
 static int		isAnEvent=0;
 static Point	coord;
 static Point	startCoord;
-
+static int      apaint = 0;
 PaintView::PaintView(int			x, 
 					 int			y, 
 					 int			w, 
@@ -98,6 +97,29 @@ void PaintView::draw()
 
 	}
 
+	if (apaint==1){
+		
+		int width = m_pDoc->m_nWidth;
+		int height = m_pDoc->m_nHeight;
+		int paintHeight = m_pDoc->m_nPaintHeight;
+		int space = m_pDoc->getSpace();
+		int size = m_pDoc->getSize();
+
+		for (int i = 0; i < width; i += space + size){
+			for (int j = 0; j < height; j += space + size){
+				Point source(i, m_nWindowHeight - j);
+				Point target(i, m_nDrawHeight - j);
+				m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+			}
+		}
+		SaveCurrentContent();
+		//RestoreContent();
+		apaint=0;
+	}
+
+
+
+
 	if ( m_pDoc->m_ucPainting && isAnEvent) 
 	{
 
@@ -106,12 +128,6 @@ void PaintView::draw()
 
 		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
 		Point target( coord.x, m_nWindowHeight - coord.y );
-
-		int width = m_pDoc->m_nWidth;
-		int height = m_pDoc->m_nHeight;
-		int paintHeight = m_pDoc->m_nPaintHeight;
-		int space = m_pDoc->getSpace();
-		int size = m_pDoc->getSize();
 
 		// This is the event handler
 		switch (eventToDo) 
@@ -165,19 +181,6 @@ void PaintView::draw()
 					m_pDoc->m_pUI->setSize(size);
 				}
 			}
-
-			break;
-		case PAINT:
-
-			for (int i = 0; i < width; i += space + size){
-				for (int j = 0; j < height; j += space + size){
-					Point source(i, m_nWindowHeight - j);
-					Point target(i, m_nDrawHeight - j);
-					m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
-				}
-			}
-
-			SaveCurrentContent();
 
 			break;
 		default:
@@ -297,8 +300,6 @@ void PaintView::RestoreContent()
 
 void PaintView::paintCanvas()
 {
-
-	eventToDo = PAINT;
-	isAnEvent = 1;
+	apaint = 1;
 	
 }
