@@ -300,6 +300,6 @@ void PaintView::RestoreContent()
 void PaintView::paintCanvas()
 {
 	apaint = 1;
-	 draw();
+	 // draw();
 	
 }
