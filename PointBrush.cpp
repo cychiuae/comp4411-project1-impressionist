@@ -23,10 +23,6 @@ void PointBrush::BrushBegin( const Point source, const Point target )
 
 	int size = pDoc->getSize();
 
-	if(pDoc->getIsRandSize()){
-		size =  rand() % pDoc->getSize();
-	}
-
 	glPointSize( (float)size );
 
 	BrushMove( source, target );
@@ -36,6 +32,12 @@ void PointBrush::BrushMove( const Point source, const Point target )
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg=pDoc->m_pUI;
+	int size = pDoc->getSize();
+
+	if(pDoc->getIsRandSize()){
+		size =  rand() % pDoc->getSize();
+	}
+	glPointSize( (float)size );
 
 	if ( pDoc == NULL ) {
 		printf( "PointBrush::BrushMove  document is NULL\n" );

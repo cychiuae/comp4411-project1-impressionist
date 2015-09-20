@@ -98,27 +98,26 @@ void PaintView::draw()
 	}
 
 	if (apaint==1){
-		
+
 		int width = m_pDoc->m_nWidth;
 		int height = m_pDoc->m_nHeight;
 		int paintHeight = m_pDoc->m_nPaintHeight;
 		int space = m_pDoc->getSpace();
 		int size = m_pDoc->getSize();
-
+		m_pDoc->m_pCurrentBrush->BrushBegin(Point(0,0), Point(0,0));
 		for (int i = 0; i < width; i += space + size){
 			for (int j = 0; j < height; j += space + size){
-				Point source(i, m_nWindowHeight - j);
-				Point target(i, m_nDrawHeight - j);
-				m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+				Point source(i, height - j);
+				Point target(i, paintHeight - j);
+				m_pDoc->m_pCurrentBrush->BrushMove(source, target);
 			}
 		}
+
 		SaveCurrentContent();
-		//RestoreContent();
+		// RestoreContent();
 		apaint=0;
+
 	}
-
-
-
 
 	if ( m_pDoc->m_ucPainting && isAnEvent) 
 	{
@@ -301,5 +300,6 @@ void PaintView::RestoreContent()
 void PaintView::paintCanvas()
 {
 	apaint = 1;
+	 draw();
 	
 }

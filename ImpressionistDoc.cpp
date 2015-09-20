@@ -203,18 +203,8 @@ int ImpressionistDoc::clearCanvas()
 		// refresh paint view as well	
 		m_pUI->m_paintView->refresh();
 	}
-	if ( m_ucPainting ) 
-	{
-		delete [] m_ucPainting;
+	return 1;
 
-		// allocate space for draw view
-		m_ucPainting	= new unsigned char [m_nPaintWidth*m_nPaintHeight*3];
-		memset(m_ucPainting, 0, m_nPaintWidth*m_nPaintHeight*3);
-
-		// refresh paint view as well	
-		m_pUI->m_paintView->refresh();
-	}	
-	return 0;
 }
 
 
