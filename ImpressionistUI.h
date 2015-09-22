@@ -123,6 +123,7 @@ private:
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void cb_colors(Fl_Menu_ *o, void *v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
+	static void cb_undo(Fl_Menu_ *o, void *v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
@@ -140,7 +141,6 @@ private:
 	static void cb_sizeRand(Fl_Widget *o, void *v);
 	static void cb_paintButton(Fl_Widget *o, void *v);
 	static void cb_doItButton(Fl_Widget *o, void *v);
-
 };
 
 #endif

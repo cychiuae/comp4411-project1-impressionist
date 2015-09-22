@@ -57,3 +57,12 @@ void ImpBrush::SetColor (const Point source)
 	// glColor3ubv( color );
 	glColor4ubv(color);
 }
+
+void ImpBrush::AddPaintToHistory() {
+	ImpressionistDoc* pDoc = GetDocument();
+	int width = pDoc->m_nPaintWidth;
+	int height = pDoc->m_nPaintHeight;
+	unsigned char *m_ucPainting = new unsigned char[width * height * 3];
+	memcpy(m_ucPainting, pDoc->m_ucPainting, width * height * 3);
+	pDoc->m_ucPainting_History.push_back(m_ucPainting);
+}

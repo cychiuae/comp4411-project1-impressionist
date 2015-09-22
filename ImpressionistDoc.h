@@ -9,6 +9,7 @@
 
 #include "impressionist.h"
 #include "bitmap.h"
+#include <vector>
 
 class ImpressionistUI;
 
@@ -22,7 +23,7 @@ public:
 	int		loadImage(char *iname);			// called by the UI to load image
 	int		saveImage(char *iname);			// called by the UI to save image
 
-
+	void	undo();
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	int		getSize();						// get the UI size
@@ -52,6 +53,8 @@ public:
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
 
+	// Painting history
+	std::vector<unsigned char *> m_ucPainting_History;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	

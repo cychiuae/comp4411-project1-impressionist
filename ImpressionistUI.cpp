@@ -242,7 +242,12 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 //-----------------------------------------------------------
 void ImpressionistUI::cb_about(Fl_Menu_* o, void* v) 
 {
-	fl_message("Impressionist FLTK version for CS341, Spring 2002");
+	fl_message("Impressionist FLTK version for COMP4411, Fall 2015");
+}
+
+void ImpressionistUI::cb_undo(Fl_Menu_ *o, void *v) {
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+	pDoc->undo();
 }
 
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
@@ -518,6 +523,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_colors },
+		{ "&Undo...", FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo },
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },
 	// TODO: Add menu callback
