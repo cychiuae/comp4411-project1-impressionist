@@ -27,11 +27,13 @@ public:
 	
 	void draw();
 	void refresh();
-	void edgeImage();
-
+	void edgeImage(Point target);
+	bool isAnEvent;
+	int eventToDo;
+	Point cursor;
 
 	void resizeWindow(int width, int height);
-
+	void moveCursor(Point pt);
 	ImpressionistDoc*	m_pDoc;
 
 private:
