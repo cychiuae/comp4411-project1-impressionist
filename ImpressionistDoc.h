@@ -38,6 +38,8 @@ public:
 	void	setBrushStrokeDirection(int direction);
 	int		getBrushStrokeDirection();
 
+	void paintCanvas(int space);
+
 // Attributes
 public:
 	// Dimensions of original window.

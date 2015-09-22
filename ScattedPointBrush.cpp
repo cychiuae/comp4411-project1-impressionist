@@ -35,11 +35,6 @@ void ScattedPointBrush::BrushMove(const Point source, const Point target)
 
 	glPointSize(1.0);
 	for (int i = 0; i < pointSize2 * pointSize2 - rand() % pointSize2 - pointSize2 / 2; i++) {
-
-		if(pDoc->getIsRandSize()){
-			pointSize =  1 + rand() % pDoc->getSize();
-		}
-
 		int randX = target.x - pointSize / 2 + rand() % pointSize;
 		int randY = target.y - pointSize / 2 + rand() % pointSize;
 		glBegin(GL_POINTS);

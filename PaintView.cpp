@@ -18,7 +18,6 @@
 #define RIGHT_MOUSE_DRAG	5
 #define RIGHT_MOUSE_UP		6
 
-
 #ifndef WIN32
 #define min(a, b)	( ( (a)<(b) ) ? (a) : (b) )
 #define max(a, b)	( ( (a)>(b) ) ? (a) : (b) )
@@ -98,7 +97,7 @@ void PaintView::draw()
 	}
 
 	if (apaint==1){
-
+		
 		int width = m_pDoc->m_nWidth;
 		int height = m_pDoc->m_nHeight;
 		int paintHeight = m_pDoc->m_nPaintHeight;
@@ -299,7 +298,32 @@ void PaintView::RestoreContent()
 
 void PaintView::paintCanvas()
 {
-	apaint = 1;
-	 // draw();
+	int width = m_pDoc->m_nWidth;
+	int height = m_pDoc->m_nHeight;
+	int paintHeight = m_pDoc->m_nPaintHeight;
+	int space = m_pDoc->getSpace();
+	int size = m_pDoc->getSize();
+	m_pDoc->m_pCurrentBrush->BrushBegin(Point(0, 0), Point(0, 0));
+	for (int i = 0; i < width; i += space + size){
+		for (int j = 0; j < height; j += space){
+			Point source(i, j);
+			Point target(i, j);
+			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
+		}
+	}
 	
+	glReadBuffer(GL_FRONT_AND_BACK);
+
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glPixelStorei(GL_PACK_ROW_LENGTH, m_pDoc->m_nPaintWidth);
+
+	glReadPixels(0,
+		m_nWindowHeight - m_nDrawHeight,
+		m_nDrawWidth,
+		m_nDrawHeight,
+		GL_RGB,
+		GL_UNSIGNED_BYTE,
+		m_pPaintBitstart);
+	RestoreContent();
+	redraw();
 }

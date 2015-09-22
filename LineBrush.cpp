@@ -89,7 +89,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			break;
 		}
 	}
-	printf("%d %d %d %d\n", source.x, target.x, source.y, target.y);
+
 	double radianAngle = (angle % 360) * M_PI / 180;
 	double sinAngle = sin(radianAngle);
 	double cosAngle = cos(radianAngle);

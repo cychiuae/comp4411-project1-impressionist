@@ -45,9 +45,6 @@ void CircleBrush::BrushMove( const Point source, const Point target )
 	
 	int chunk = 24;
 	int radius = pDoc->getSize();
-	if(pDoc->getIsRandSize()){
-		radius =  rand() % pDoc->getSize();
-	}
 
 	glBegin( GL_POLYGON );
 

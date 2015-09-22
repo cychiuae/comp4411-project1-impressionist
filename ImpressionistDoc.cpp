@@ -236,3 +236,10 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 	return GetOriginalPixel( p.x, p.y );
 }
 
+void ImpressionistDoc::paintCanvas(int space) {
+	for (int i = 0; i < m_nWidth; i += space) {
+		for (int j = 0; j < m_nHeight; j += space) {
+		
+		}
+	}
+}

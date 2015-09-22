@@ -34,11 +34,6 @@ void ScatteredLineBrush::BrushMove(const Point source, const Point target)
 	int size2 = dlg->getSize();
 
 	for (int i = 0; i< rand() % size2; i++){
-
-		if(pDoc->getIsRandSize()){
-			size =  1 + rand() % dlg->getSize();
-		}
-
 		int x = target.x - size / 2 + rand() % size;
 		int y = target.y - size / 2 + rand() % size;
 		
