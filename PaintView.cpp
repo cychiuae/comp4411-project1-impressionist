@@ -311,7 +311,7 @@ void PaintView::paintCanvas()
 			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
 		}
 	}
-	
+	m_pDoc->m_pCurrentBrush->BrushEnd(Point(0, 0), Point(0, 0));
 	glReadBuffer(GL_FRONT_AND_BACK);
 
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
@@ -325,5 +325,6 @@ void PaintView::paintCanvas()
 		GL_UNSIGNED_BYTE,
 		m_pPaintBitstart);
 	RestoreContent();
+
 	redraw();
 }
