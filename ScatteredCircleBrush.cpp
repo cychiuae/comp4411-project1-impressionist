@@ -11,6 +11,7 @@
 
 extern float frand();
 extern int irand(int max);
+
 ScatteredCircleBrush::ScatteredCircleBrush( ImpressionistDoc* pDoc, char* name ) :
 	
 	ImpBrush(pDoc,name)
