@@ -242,7 +242,12 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 //-----------------------------------------------------------
 void ImpressionistUI::cb_about(Fl_Menu_* o, void* v) 
 {
-	fl_message("Impressionist FLTK version for CS341, Spring 2002");
+	fl_message("Impressionist FLTK version for COMP4411, Fall 2015");
+}
+
+void ImpressionistUI::cb_undo(Fl_Menu_ *o, void *v) {
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+	pDoc->undo();
 }
 
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
@@ -264,6 +269,8 @@ void ImpressionistUI::cb_brushChoice(Fl_Widget* o, void* v)
 		case BRUSH_CIRCLES:
 		case BRUSH_SCATTERED_POINTS:
 		case BRUSH_SCATTERED_CIRCLES:
+		case BRUSH_TRIANGLE:
+		case BRUSH_SCATTERED_TRIANGLE:
 			pUI->m_BrushLineWidthSlider->deactivate();
 			pUI->m_BrushLineAngleSlider->deactivate();
 			pUI->m_BrushStrokeDirectionChoice->deactivate();
@@ -516,6 +523,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_colors },
+		{ "&Undo...", FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo },
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },
 	// TODO: Add menu callback
@@ -543,6 +551,8 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Scattered Points",	FL_ALT+'q', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_POINTS},
   {"Scattered Lines",	FL_ALT+'m', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_LINES},
   {"Scattered Circles",	FL_ALT+'d', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_CIRCLES},
+  {"Triangle",			FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_TRIANGLE},
+  {"Scattered Triangle", FL_ALT + 'y', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_TRIANGLE },
   {0}
 };
 

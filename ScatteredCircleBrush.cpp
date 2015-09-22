@@ -11,6 +11,7 @@
 
 extern float frand();
 extern int irand(int max);
+
 ScatteredCircleBrush::ScatteredCircleBrush( ImpressionistDoc* pDoc, char* name ) :
 	
 	ImpBrush(pDoc,name)
@@ -62,5 +63,6 @@ void ScatteredCircleBrush::BrushMove( const Point source, const Point target )
 void ScatteredCircleBrush::BrushEnd( const Point source, const Point target )
 {
 	// do nothing so far
+	AddPaintToHistory();
 }
 

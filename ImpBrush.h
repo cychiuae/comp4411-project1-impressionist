@@ -19,6 +19,8 @@ enum
 	BRUSH_SCATTERED_POINTS,
 	BRUSH_SCATTERED_LINES,
 	BRUSH_SCATTERED_CIRCLES,
+	BRUSH_TRIANGLE,
+	BRUSH_SCATTERED_TRIANGLE,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
 
@@ -53,6 +55,9 @@ public:
 
 	// according to the source image and the position, determine the draw color
 	void SetColor( const Point source );
+
+	// Add to Paint Histotry
+	void AddPaintToHistory();
 
 	// get Doc to communicate with it
 	ImpressionistDoc* GetDocument( void );

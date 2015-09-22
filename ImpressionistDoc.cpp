@@ -19,7 +19,8 @@
 #include "ScattedPointBrush.h"
 #include "ScatteredCircleBrush.h"
 #include "ScatteredLineBrush.h"
-
+#include "TriangleBrush.h"
+#include "ScatteredTriangleBrush.h"
 
 #define DESTROY(p)	{  if ((p)!=NULL) {delete [] p; p=NULL; } }
 
@@ -50,6 +51,10 @@ ImpressionistDoc::ImpressionistDoc()
 		= new ScatteredLineBrush( this, "Scattered Lines" );
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	
 		= new ScatteredCircleBrush( this, "Scattered Circles" );
+	ImpBrush::c_pBrushes[BRUSH_TRIANGLE]
+		= new TriangleBrush(this, "Triangle");
+	ImpBrush::c_pBrushes[BRUSH_SCATTERED_TRIANGLE]
+		= new ScatteredTriangleBrush(this, "Scattered Triangle");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
@@ -118,6 +123,15 @@ boolean ImpressionistDoc::getIsAnotherGradient(){
 	return m_pUI->getIsAnotherGradient();
 }
 
+void ImpressionistDoc::undo() {
+	if (!m_ucPainting_History.empty()) {
+		if (m_ucPainting) delete[] m_ucPainting;
+		m_ucPainting = m_ucPainting_History.back();
+		m_ucPainting_History.pop_back();
+		m_pUI->m_paintView->refresh();
+	}
+}
+
 //---------------------------------------------------------
 // Load the specified image
 // This is called by the UI when the load image button is 
@@ -145,6 +159,8 @@ int ImpressionistDoc::loadImage(char *iname)
 	// release old storage
 	if ( m_ucBitmap ) delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
+
+	m_ucPainting_History.clear();
 
 	m_ucBitmap		= data;
 

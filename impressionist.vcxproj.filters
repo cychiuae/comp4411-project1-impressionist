@@ -14,6 +14,8 @@
     <ClCompile Include="ScattedPointBrush.cpp" />
     <ClCompile Include="ScatteredCircleBrush.cpp" />
     <ClCompile Include="ScatteredLineBrush.cpp" />
+    <ClCompile Include="TriangleBrush.cpp" />
+    <ClCompile Include="ScatteredTriangleBrush.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h" />
@@ -29,5 +31,7 @@
     <ClInclude Include="ScattedPointBrush.h" />
     <ClInclude Include="ScatteredCircleBrush.h" />
     <ClInclude Include="ScatteredLineBrush.h" />
+    <ClInclude Include="TriangleBrush.h" />
+    <ClInclude Include="ScatteredTriangleBrush.h" />
   </ItemGroup>
 </Project>
