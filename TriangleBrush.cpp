@@ -46,5 +46,6 @@ void TriangleBrush::BrushMove(const Point source, const Point target)
 void TriangleBrush::BrushEnd(const Point source, const Point target)
 {
 	// do nothing so far
+	AddPaintToHistory();
 }
 

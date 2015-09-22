@@ -111,4 +111,5 @@ void ScatteredLineBrush::BrushMove(const Point source, const Point target)
 void ScatteredLineBrush::BrushEnd(const Point source, const Point target)
 {
 	// do nothing so far
+	AddPaintToHistory();
 }

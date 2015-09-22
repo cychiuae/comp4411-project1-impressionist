@@ -105,4 +105,5 @@ void LineBrush::BrushMove(const Point source, const Point target)
 void LineBrush::BrushEnd(const Point source, const Point target)
 {
 	// do nothing so far
+	AddPaintToHistory();
 }

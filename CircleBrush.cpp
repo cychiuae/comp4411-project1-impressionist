@@ -64,5 +64,6 @@ void CircleBrush::BrushMove( const Point source, const Point target )
 void CircleBrush::BrushEnd( const Point source, const Point target )
 {
 	// do nothing so far
+	AddPaintToHistory();
 }
 

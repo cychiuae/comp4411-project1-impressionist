@@ -63,5 +63,6 @@ void ScatteredCircleBrush::BrushMove( const Point source, const Point target )
 void ScatteredCircleBrush::BrushEnd( const Point source, const Point target )
 {
 	// do nothing so far
+	AddPaintToHistory();
 }
 
