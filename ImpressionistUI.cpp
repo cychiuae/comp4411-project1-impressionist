@@ -383,7 +383,7 @@ void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
 	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
-	//pUI->m_origView->edgeImage(Point(50,50));
+	pUI->m_origView->drawEdgeImage();
 }
 
 void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {

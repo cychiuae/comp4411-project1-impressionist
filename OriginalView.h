@@ -34,6 +34,8 @@ public:
 
 	void resizeWindow(int width, int height);
 	void moveCursor(Point pt);
+	void drawEdgeImage();
+	float getGradient(Point pt);
 	ImpressionistDoc*	m_pDoc;
 
 private:
