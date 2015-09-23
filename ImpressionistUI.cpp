@@ -259,7 +259,6 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 void ImpressionistUI::cb_orginal_image(Fl_Menu_* o, void* v)
 {
 	ImpressionistDoc* pDoc=whoami(o)->getDocument();
-
 	pDoc->switchOriginalImage();
 
 }
@@ -268,14 +267,12 @@ void ImpressionistUI::cb_orginal_image(Fl_Menu_* o, void* v)
 void ImpressionistUI::cb_edge_image(Fl_Menu_* o, void* v)
 {
 	ImpressionistDoc* pDoc=whoami(o)->getDocument();
-
-	pDoc->createAndSwitchEdgeImage();
+	pDoc->switchEdgeImage();
 }
 
 void ImpressionistUI::cb_another_image(Fl_Menu_* o, void* v)
 {
 	ImpressionistDoc* pDoc=whoami(o)->getDocument();
-
 	pDoc->switchAnotherImage();
 }
 
@@ -434,7 +431,8 @@ void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
 	ImpressionistUI *pUI = ((ImpressionistUI*)(o->user_data()));
-	pUI->getDocument()->createAndSwitchEdgeImage();
+	pUI->getDocument()->createEdgeImage();
+	pUI->getDocument()->switchEdgeImage();
 }
 
 void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {

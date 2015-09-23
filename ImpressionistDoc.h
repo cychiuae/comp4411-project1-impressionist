@@ -83,10 +83,10 @@ public:
 	GLubyte*  GetOriginalPixel( int x, int y );   
 	// Get the color of the original picture at the specified point	
 	GLubyte*  GetOriginalPixel( const Point p );  
+	void      createEdgeImage();
 	void      switchOriginalImage();
-	void      createAndSwitchEdgeImage();
+	void      switchEdgeImage();
 	void      switchAnotherImage();
-	void      storeBackTheOriginalImage();
 	double*   calGrayVal(int width, int height);
 	int*      calSobelVal(double* gray_image, int width, int height);
 

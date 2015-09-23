@@ -173,10 +173,15 @@ int ImpressionistDoc::loadImage(char *iname)
 
 	m_ucBitmap		 = data;
 	m_nOrginalBitmap = data; // backup the original bitmap
+	m_nAnotherImage  = new unsigned char[m_nWidth*m_nHeight*3];
+	memcpy(m_nAnotherImage, data, width*height*3);
 
 	// cal the gray and sobel value of image for create the edge image
 	m_nGray_val = calGrayVal(m_nWidth, m_nHeight);
 	m_nSobel_val = calSobelVal(m_nGray_val, m_nWidth, m_nHeight);
+	createEdgeImage();
+
+
 
 	// allocate space for draw view
 	m_ucPainting = new unsigned char [width*height*3];
@@ -217,6 +222,9 @@ int ImpressionistDoc::loadEdgeImage(char *iname)
 		return 0;
 	}
 
+	if ( m_nEdgeImage )    delete [] m_nEdgeImage;
+
+
 	m_nEdgeImage = data;
 
 	return 1;
@@ -227,6 +235,7 @@ int ImpressionistDoc::loadAnotherImage(char *iname)
 	unsigned char*	data;
 	int				width, 
 					height;
+
 
 	if ( (data=readBMP(iname, width, height))==NULL ) 
 	{
@@ -239,12 +248,16 @@ int ImpressionistDoc::loadAnotherImage(char *iname)
 		return 0;
 	}
 
+	if ( m_nAnotherImage ) delete [] m_nAnotherImage;
+
+
 	m_nAnotherImage = data;
 
 	return 1;
 }
 int ImpressionistDoc::swapImage() 
 {
+	if(!m_ucBitmap || !m_ucPainting) return 0;
 	unsigned char* temp = m_ucBitmap;
 	m_ucBitmap = m_ucPainting;
 	m_ucPainting = temp;
@@ -252,16 +265,9 @@ int ImpressionistDoc::swapImage()
 	m_pUI->m_origView->refresh();
 	m_pUI->m_paintView->refresh();
 
-
 	return 1;
 }
 
-void ImpressionistDoc::storeBackTheOriginalImage(){
-
-	m_ucBitmap = m_nOrginalBitmap;
-	m_pUI->m_origView->refresh();
-
-}
 
 //----------------------------------------------------------------
 // Save the specified image
@@ -343,28 +349,28 @@ void ImpressionistDoc::switchOriginalImage(){
 	m_pUI->m_origView->refresh();
 
 }
-void ImpressionistDoc::createAndSwitchEdgeImage(){
+void ImpressionistDoc::createEdgeImage(){
 
-	
-	unsigned char* edge_image = new unsigned char[m_nWidth*m_nHeight*3];
+	if ( m_nEdgeImage ) delete [] m_nEdgeImage;
+
+	unsigned char* edge_image = new unsigned char[m_nWidth*m_nHeight * 3];
 	for (int i = 0; i < m_nWidth; i += 1){
 		for (int j = 0; j < m_nHeight; j += 1){
 			int index = i + j * m_nWidth;
-			edge_image[(index)*3 + 0] = 
-			edge_image[(index)*3 + 1] = 
-			edge_image[(index)*3 + 2] = 
-			255 * (m_nSobel_val[index] >= getEdgeThreshold());
+			edge_image[(index)* 3 + 0] =
+				edge_image[(index)* 3 + 1] =
+				edge_image[(index)* 3 + 2] =
+				255 * (m_nSobel_val[index] >= getEdgeThreshold());
 		}
 	}
-	// update the new edge image
-	m_ucBitmap = edge_image;
-	m_pUI->m_origView->refresh();
-
-	// store the new edge image
-	if(m_nEdgeImage) delete [] m_nEdgeImage;
 	m_nEdgeImage = edge_image;
 
 
+}
+void ImpressionistDoc::switchEdgeImage(){
+
+	m_ucBitmap = m_nEdgeImage;
+	m_pUI->m_origView->refresh();
 
 }
 void ImpressionistDoc::switchAnotherImage(){
