@@ -35,6 +35,13 @@ void ScatteredTriangleBrush::BrushMove(const Point source, const Point target)
 		return;
 	}
 	for (int i = 0; i < rand() % 6 + 2; i++){
+
+		// rand size start
+		if(dlg->getIsPaint() && dlg->getIsRandSize()){
+			size = rand() % pDoc->getSize() + 1;
+		}
+		// rand size end
+		
 		int randx = target.x - size / 2 + irand(size);
 		int randy = target.y - size / 2 + irand(size);
 		glBegin(GL_TRIANGLES);

@@ -13,8 +13,6 @@ void ScatteredLineBrush::BrushBegin(const Point source, const Point target)
 
 	int size = pDoc->getSize();
 
-
-
 	glPointSize((float)size);
 
 	BrushMove(source, target);
@@ -34,6 +32,13 @@ void ScatteredLineBrush::BrushMove(const Point source, const Point target)
 	int size2 = dlg->getSize();
 
 	for (int i = 0; i< rand() % size2; i++){
+
+		// rand size start
+		if(dlg->getIsPaint() && dlg->getIsRandSize()){
+			size = rand() % (dlg->getSize()) + 1;
+		}
+		// rand size end
+
 		int x = target.x - size / 2 + rand() % size;
 		int y = target.y - size / 2 + rand() % size;
 		

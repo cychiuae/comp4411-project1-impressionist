@@ -85,6 +85,8 @@ public:
 	boolean             getIsRandSize();
 	boolean             getIsEdgeClipping();
 	boolean             getIsAnotherGradient();
+	boolean             getIsPaint();
+	void                setIsPaint(boolean is);
 
 	double				getRed();
 	double				getGreen();
@@ -103,6 +105,7 @@ private:
 	boolean m_is_edge_clipping;
 	boolean m_is_another_gradient;
 	boolean m_is_size_rand;
+	boolean m_isPaint;
 
 	double	m_nAlpha;
 	double	m_nRed;

@@ -46,6 +46,13 @@ void ScatteredCircleBrush::BrushMove( const Point source, const Point target )
 	int radius = pDoc->getSize() / 2;
 
 	for (int i = 0; i < rand() % 6 + 2; i++){
+
+		// rand size start
+		if(dlg->getIsPaint() && dlg->getIsRandSize()){
+			radius = rand() % (pDoc->getSize() / 2) + 1;
+		}
+		// rand size end
+		
 		glBegin(GL_POLYGON);
 		int randx = target.x - radius + irand(radius * 2);
 		int randy = target.y - radius + irand(radius * 2);

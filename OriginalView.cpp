@@ -78,7 +78,7 @@ void OriginalView::draw()
 		glDrawPixels( drawWidth, drawHeight, GL_RGB, GL_UNSIGNED_BYTE, bitstart );
 
 		if (isAnEvent) {
-			printf("is an event\n");
+			// printf("is an event\n");
 			isAnEvent = false;
 			switch (eventToDo) {
 			case CUSOR_EVENT:

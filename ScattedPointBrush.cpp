@@ -33,6 +33,13 @@ void ScattedPointBrush::BrushMove(const Point source, const Point target)
 	int pointSize = pDoc->getSize();
 	int pointSize2 = pDoc->getSize();
 
+
+	// rand size start
+	if(dlg->getIsPaint() && dlg->getIsRandSize()){
+		pointSize = rand() % pDoc->getSize() + 1;
+	}
+	// rand size end
+	
 	glPointSize(1.0);
 	for (int i = 0; i < pointSize2 * pointSize2 - rand() % pointSize2 - pointSize2 / 2; i++) {
 		int randX = target.x - pointSize / 2 + rand() % pointSize;

@@ -34,6 +34,12 @@ void PointBrush::BrushMove( const Point source, const Point target )
 	ImpressionistUI* dlg=pDoc->m_pUI;
 	int size = pDoc->getSize();
 
+	// rand size start
+	if(dlg->getIsPaint() && dlg->getIsRandSize()){
+		size = rand() % pDoc->getSize() + 1;
+	}
+	// rand size end
+	
 	glPointSize( (float)size );
 
 	if ( pDoc == NULL ) {

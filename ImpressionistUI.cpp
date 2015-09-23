@@ -397,8 +397,13 @@ void ImpressionistUI::cb_sizeRand(Fl_Widget *o, void *v) {
 
 void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	pUI->m_isPaint = true;
 	pUI->m_paintView->paintCanvas();
+	pUI->m_isPaint = false;
+
 }
+
+
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
 	ImpressionistUI *pUI = ((ImpressionistUI*)(o->user_data()));
@@ -461,6 +466,13 @@ void ImpressionistUI::setDocument(ImpressionistDoc* doc)
 int ImpressionistUI::getSize()
 {
 	return m_nSize;
+}
+
+boolean ImpressionistUI::getIsPaint(){
+	return m_isPaint;
+}
+void ImpressionistUI::setIsPaint(boolean is){
+	m_isPaint = is;
 }
 
 //-------------------------------------------------
@@ -627,6 +639,7 @@ ImpressionistUI::ImpressionistUI() {
 	m_is_edge_clipping = 1;
 	m_is_another_gradient = 0;
 	m_is_size_rand = 1;
+	m_isPaint = false;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");

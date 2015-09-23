@@ -28,6 +28,12 @@ void TriangleBrush::BrushMove(const Point source, const Point target)
 
 	glPointSize((float)size);
 
+	// rand size start
+	if(dlg->getIsPaint() && dlg->getIsRandSize()){
+		size = rand() % pDoc->getSize() + 1;
+	}
+	// rand size end
+
 	if (pDoc == NULL) {
 		printf("PointBrush::BrushMove  document is NULL\n");
 		return;
