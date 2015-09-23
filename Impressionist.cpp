@@ -5,7 +5,7 @@
 // UI and Doc.
 // They do have a link to each other as their member such that they can 
 // communicate.
-//
+////////
 
 #include <stdio.h>
 
