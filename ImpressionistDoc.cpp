@@ -27,11 +27,14 @@
 ImpressionistDoc::ImpressionistDoc() 
 {
 	// Set NULL image name as init. 
-	m_imageName[0]	='\0';	
+	m_imageName[0]	   ='\0';	
 
-	m_nWidth		= -1;
-	m_ucBitmap		= NULL;
-	m_ucPainting	= NULL;
+	m_nWidth		   = -1;
+	m_ucBitmap		   = NULL;
+	m_ucPainting	   = NULL;
+	m_nGray_val        = NULL;
+	m_nSobel_val       = NULL;
+	m_nOrginalBitmap   = NULL;
 
 
 	// create one instance of each brush
@@ -157,15 +160,22 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_nPaintHeight	= height;
 
 	// release old storage
-	if ( m_ucBitmap ) delete [] m_ucBitmap;
+	if ( m_ucBitmap )   delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
+	if ( m_nGray_val )  delete [] m_nGray_val;
+	if ( m_nSobel_val ) delete [] m_nSobel_val;
 
 	m_ucPainting_History.clear();
 
-	m_ucBitmap		= data;
+	m_ucBitmap		 = data;
+	m_nOrginalBitmap = data; // backup the original bitmap
+
+	// cal the gray and sobel value of image for create the edge image
+	m_nGray_val = calGrayVal(m_nWidth, m_nHeight);
+	m_nSobel_val = calSobelVal(m_nGray_val, m_nWidth, m_nHeight);
 
 	// allocate space for draw view
-	m_ucPainting	= new unsigned char [width*height*3];
+	m_ucPainting = new unsigned char [width*height*3];
 	memset(m_ucPainting, 0, width*height*3);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
@@ -185,6 +195,12 @@ int ImpressionistDoc::loadImage(char *iname)
 	return 1;
 }
 
+void ImpressionistDoc::storeBackTheOriginalImage(){
+
+	m_ucBitmap = m_nOrginalBitmap;
+	m_pUI->m_origView->refresh();
+
+}
 
 //----------------------------------------------------------------
 // Save the specified image
@@ -195,7 +211,6 @@ int ImpressionistDoc::saveImage(char *iname)
 {
 
 	writeBMP(iname, m_nPaintWidth, m_nPaintHeight, m_ucPainting);
-
 	return 1;
 }
 
@@ -222,9 +237,6 @@ int ImpressionistDoc::clearCanvas()
 	return 1;
 
 }
-
-
-
 
 //------------------------------------------------------------------
 // Get the color of the pixel in the original image at coord x and y
@@ -258,4 +270,87 @@ void ImpressionistDoc::paintCanvas(int space) {
 		
 		}
 	}
+}
+
+//----------------------------------------------------------------
+// create the edge image
+//----------------------------------------------------------------
+void ImpressionistDoc::createEdgeImage(){
+	
+	unsigned char* edge_image = new unsigned char[m_nWidth*m_nHeight*3];
+	for (int i = 0; i < m_nWidth; i += 1){
+		for (int j = 0; j < m_nHeight; j += 1){
+			int index = i + j * m_nWidth;
+			edge_image[(index)*3 + 0] = 
+			edge_image[(index)*3 + 1] = 
+			edge_image[(index)*3 + 2] = 
+			255 * (m_nSobel_val[index] >= getEdgeThreshold());
+		}
+	}
+	m_ucBitmap = edge_image;
+	m_pUI->m_origView->refresh();
+
+}
+
+//----------------------------------------------------------------
+// create the gray value matrix
+//----------------------------------------------------------------
+double* ImpressionistDoc::calGrayVal(int width, int height){
+
+	double* gray_image = new double[width*height];
+
+	for (int i = 0; i < width; i +=1){
+		for (int j = 0; j < height; j +=1){
+			int index = i+j*width;
+			GLubyte color[3];
+			memcpy(color, GetOriginalPixel(Point(i, j)), 3);
+			gray_image[index] = 0.299*color[0] + 0.587*color[1] + 0.114*color[2];
+		}
+	}
+	return gray_image;
+}
+
+//----------------------------------------------------------------
+// create the sobel value matrix
+//----------------------------------------------------------------
+
+int* ImpressionistDoc::calSobelVal(double* gray_image, int width, int height){
+
+	int* sobel_val = new int[width*height];
+	double* sobelX = new double[width*height];
+	double* sobelY = new double[width*height];
+
+	int sobelXOperator[3][3] = {
+		{ -1, 0, 1 },
+		{ -2, 0, 2 },
+		{ -1, 0, 1 }
+	};
+	int sobelYOperator[3][3] = {
+		{ 1, 2, 1 },
+		{ 0, 0, 0 },
+		{ -1, -2, -1 }
+	};
+
+	// gray to sobel
+	for (int i = 0; i < width; i +=1){
+		for (int j = 0; j < height; j +=1){
+			int index = i+j*width;
+			sobelX[index] = sobelY[index] = 0;
+			for (int row = 0; row < 3; row++) {
+				for (int col = 0; col < 3; col++) {
+					int l = i + col - 1;
+					int k = j + row - 1;
+					if (l < 0 || l >= width) l = 0;
+					if (k < 0 || k >= height) k = 0;
+					sobelX[index] += gray_image[l+k*width] * sobelXOperator[row][col];
+					sobelY[index] += gray_image[l+k*width] * sobelYOperator[row][col];
+				}
+			}
+
+			sobel_val[index] = (int) sqrt(sobelX[index]*sobelX[index] + sobelY[index]*sobelY[index]);
+
+
+		}
+	}
+	return sobel_val;
 }

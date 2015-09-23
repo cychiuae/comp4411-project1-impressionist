@@ -32,11 +32,11 @@ void CircleBrush::BrushBegin( const Point source, const Point target )
 
 void CircleBrush::BrushMove( const Point source, const Point target )
 {
-	printf("target x %d, y %d\n",target.x, target.y);
-	printf("source x %d, y %d\n",source.x, source.y);
+	//printf("target x %d, y %d\n",target.x, target.y);
+	//printf("source x %d, y %d\n",source.x, source.y);
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg=pDoc->m_pUI;
-	printf("size %d\n", pDoc->getSize());
+	//printf("size %d\n", pDoc->getSize());
 
 	if ( pDoc == NULL ) {
 		printf( "CircleBrush::BrushMove  document is NULL\n" );

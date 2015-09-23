@@ -26,8 +26,10 @@ public:
 	void	undo();
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	setBrushType(int type);			// called by the UI to set the brushType
+
 	int		getSize();						// get the UI size
 	void	setSize(int size);				// set the UI size
+	
 	char*	getImageName();					// get the current image name
 
 	int     getSpace();
@@ -52,12 +54,17 @@ public:
 	// Bitmaps for original image and painting.
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
+	unsigned char*  m_nOrginalBitmap;
+
+	// Values for generate the gray and sobel image
+	double*         m_nGray_val;
+	int*            m_nSobel_val;
 
 	// Painting history
 	std::vector<unsigned char *> m_ucPainting_History;
 
 	// The current active brush.
-	ImpBrush*			m_pCurrentBrush;	
+	ImpBrush* m_pCurrentBrush;	
 	// Size of the brush.
 	int m_nSize;							
 	// Direction of brush
@@ -68,9 +75,13 @@ public:
 // Operations
 public:
 	// Get the color of the original picture at the specified coord
-	GLubyte* GetOriginalPixel( int x, int y );   
+	GLubyte*  GetOriginalPixel( int x, int y );   
 	// Get the color of the original picture at the specified point	
-	GLubyte* GetOriginalPixel( const Point p );  
+	GLubyte*  GetOriginalPixel( const Point p );  
+	void      createEdgeImage();
+	void      storeBackTheOriginalImage();
+	double*   calGrayVal(int width, int height);
+	int*      calSobelVal(double* gray_image, int width, int height);
 
 
 private:

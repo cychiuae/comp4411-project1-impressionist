@@ -25,18 +25,15 @@ class OriginalView : public Fl_Gl_Window
 public:
 	OriginalView(int x, int y, int w, int h, const char *l);
 	
-	void draw();
-	void refresh();
-	void edgeImage(Point target);
+	void  draw();
+	void  refresh();
+	void  resizeWindow(int width, int height);
+	void  moveCursor(Point pt);
+
+	ImpressionistDoc* m_pDoc;
 	bool isAnEvent;
 	int eventToDo;
 	Point cursor;
-
-	void resizeWindow(int width, int height);
-	void moveCursor(Point pt);
-	void drawEdgeImage();
-	float getGradient(Point pt);
-	ImpressionistDoc*	m_pDoc;
 
 private:
 	int	m_nWindowWidth, 

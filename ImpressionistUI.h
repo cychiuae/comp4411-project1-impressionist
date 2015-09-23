@@ -141,6 +141,9 @@ private:
 	static void cb_sizeRand(Fl_Widget *o, void *v);
 	static void cb_paintButton(Fl_Widget *o, void *v);
 	static void cb_doItButton(Fl_Widget *o, void *v);
+	static void cb_orginal_image(Fl_Menu_* o, void* v);
+	static void cb_edge_image(Fl_Menu_* o, void* v);
 };
+
 
 #endif

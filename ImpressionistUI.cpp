@@ -234,6 +234,25 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 
 }
 
+void ImpressionistUI::cb_orginal_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc* pDoc=whoami(o)->getDocument();
+
+	pDoc->storeBackTheOriginalImage();
+
+}
+
+
+void ImpressionistUI::cb_edge_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc* pDoc=whoami(o)->getDocument();
+
+	pDoc->createEdgeImage();
+}
+
+
+
+
 
 
 //-----------------------------------------------------------
@@ -330,7 +349,7 @@ void ImpressionistUI::cb_lineAngleSlides(Fl_Widget *o, void *v) {
 
 void ImpressionistUI::cb_alphaSlides(Fl_Widget *o, void *v) {
 	((ImpressionistUI*)(o->user_data()))->m_nAlpha = double(((Fl_Slider *)o)->value());
-	printf("Alpha: %.02f", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
+	// printf("Alpha: %.02f", ((ImpressionistUI*)(o->user_data()))->m_nAlpha);
 }
 void ImpressionistUI::cb_spaceSlides(Fl_Widget *o, void *v) {
 	((ImpressionistUI*)(o->user_data()))->m_nSpace = int(((Fl_Slider *)o)->value());
@@ -382,8 +401,8 @@ void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 }
 
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
-	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
-	pUI->m_origView->drawEdgeImage();
+	ImpressionistUI *pUI = ((ImpressionistUI*)(o->user_data()));
+	pUI->getDocument()->createEdgeImage();
 }
 
 void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {
@@ -528,8 +547,8 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ 0 },
 	// TODO: Add menu callback
 	{ "&Display",	0, 0, 0, FL_SUBMENU },
-		{ "&Original Image", FL_ALT + 'o', 0 },
-		{ "&Edge Image", FL_ALT + 'e', 0 },
+		{ "&Original Image", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_orginal_image },
+		{ "&Edge Image", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_edge_image },
 		{ "&Another Image", FL_ALT + 'a', 0 },
 		{ 0 },
 	{ "&Options",	0, 0, 0, FL_SUBMENU },
@@ -545,21 +564,21 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 
 // Brush choice menu definition
 Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
-  {"Points",			FL_ALT+'p', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_POINTS},
-  {"Lines",				FL_ALT+'l', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_LINES},
-  {"Circles",			FL_ALT+'c', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_CIRCLES},
-  {"Scattered Points",	FL_ALT+'q', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_POINTS},
-  {"Scattered Lines",	FL_ALT+'m', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_LINES},
-  {"Scattered Circles",	FL_ALT+'d', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_CIRCLES},
-  {"Triangle",			FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_TRIANGLE},
-  {"Scattered Triangle", FL_ALT + 'y', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_TRIANGLE },
+  {"Points",			   FL_ALT+'p', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_POINTS},
+  {"Lines",				   FL_ALT+'l', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_LINES},
+  {"Circles",			   FL_ALT+'c', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_CIRCLES},
+  {"Scattered Points",	   FL_ALT+'q', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_POINTS},
+  {"Scattered Lines",	   FL_ALT+'m', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_LINES},
+  {"Scattered Circles",	   FL_ALT+'d', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_CIRCLES},
+  {"Triangle",			   FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_TRIANGLE},
+  {"Scattered Triangle",   FL_ALT+'y', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BRUSH_SCATTERED_TRIANGLE },
   {0}
 };
 
 Fl_Menu_Item ImpressionistUI::brushStrokeDirectionMenu[NUM_STROKE_DIRECTION + 1] = {
-	{"Slider/Right Mouse",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_SLIDER},
-	{"Gradient", FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_GRADIENT},
-	{"Brush Direction", FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_BRUSH_DIRECTION},
+	{"Slider/Right Mouse", FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_SLIDER},
+	{"Gradient",           FL_ALT+'g', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_GRADIENT},
+	{"Brush Direction",    FL_ALT+'b', (Fl_Callback *)ImpressionistUI::cb_strokeDirection, (void *)STROKE_DIRECTION_BRUSH_DIRECTION},
 	{0}
 };
 
