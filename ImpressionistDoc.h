@@ -21,6 +21,9 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
+	int		loadAnotherImage(char *iname);			// called by the UI to load image
+	int		loadEdgeImage(char *iname);			// called by the UI to load image
+	int		swapImage();			// called by the UI to load image
 	int		saveImage(char *iname);			// called by the UI to save image
 
 	void	undo();
@@ -55,6 +58,8 @@ public:
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_nOrginalBitmap;
+	unsigned char*  m_nEdgeImage;
+	unsigned char*  m_nAnotherImage;
 
 	// Values for generate the gray and sobel image
 	double*         m_nGray_val;
@@ -78,7 +83,9 @@ public:
 	GLubyte*  GetOriginalPixel( int x, int y );   
 	// Get the color of the original picture at the specified point	
 	GLubyte*  GetOriginalPixel( const Point p );  
-	void      createEdgeImage();
+	void      switchOriginalImage();
+	void      createAndSwitchEdgeImage();
+	void      switchAnotherImage();
 	void      storeBackTheOriginalImage();
 	double*   calGrayVal(int width, int height);
 	int*      calSobelVal(double* gray_image, int width, int height);

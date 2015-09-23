@@ -35,6 +35,8 @@ ImpressionistDoc::ImpressionistDoc()
 	m_nGray_val        = NULL;
 	m_nSobel_val       = NULL;
 	m_nOrginalBitmap   = NULL;
+	m_nEdgeImage       = NULL;
+	m_nAnotherImage    = NULL;
 
 
 	// create one instance of each brush
@@ -160,10 +162,12 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_nPaintHeight	= height;
 
 	// release old storage
-	if ( m_ucBitmap )   delete [] m_ucBitmap;
-	if ( m_ucPainting ) delete [] m_ucPainting;
-	if ( m_nGray_val )  delete [] m_nGray_val;
-	if ( m_nSobel_val ) delete [] m_nSobel_val;
+	if ( m_ucBitmap )      delete [] m_ucBitmap;
+	if ( m_ucPainting )    delete [] m_ucPainting;
+	if ( m_nGray_val )     delete [] m_nGray_val;
+	if ( m_nSobel_val )    delete [] m_nSobel_val;
+	if ( m_nEdgeImage )    delete [] m_nEdgeImage;
+	if ( m_nAnotherImage ) delete [] m_nAnotherImage;
 
 	m_ucPainting_History.clear();
 
@@ -189,6 +193,63 @@ int ImpressionistDoc::loadImage(char *iname)
 
 	// refresh paint view as well
 	m_pUI->m_paintView->resizeWindow(width, height);	
+	m_pUI->m_paintView->refresh();
+
+
+	return 1;
+}
+
+int ImpressionistDoc::loadEdgeImage(char *iname) 
+{
+	// try to open the image to read
+	unsigned char*	data;
+	int				width, 
+					height;
+
+	if ( (data=readBMP(iname, width, height))==NULL ) 
+	{
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+
+	if(	m_nWidth != width || m_nHeight != height){
+		fl_alert("Can't load bitmap file, because the width and height does not mathc with the original image.");
+		return 0;
+	}
+
+	m_nEdgeImage = data;
+
+	return 1;
+}
+int ImpressionistDoc::loadAnotherImage(char *iname) 
+{
+	// try to open the image to read
+	unsigned char*	data;
+	int				width, 
+					height;
+
+	if ( (data=readBMP(iname, width, height))==NULL ) 
+	{
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+
+	if(	m_nWidth != width || m_nHeight != height){
+		fl_alert("Can't load bitmap file, because the width and height does not mathc with the original image.");
+		return 0;
+	}
+
+	m_nAnotherImage = data;
+
+	return 1;
+}
+int ImpressionistDoc::swapImage() 
+{
+	unsigned char* temp = m_ucBitmap;
+	m_ucBitmap = m_ucPainting;
+	m_ucPainting = temp;
+	
+	m_pUI->m_origView->refresh();
 	m_pUI->m_paintView->refresh();
 
 
@@ -275,7 +336,15 @@ void ImpressionistDoc::paintCanvas(int space) {
 //----------------------------------------------------------------
 // create the edge image
 //----------------------------------------------------------------
-void ImpressionistDoc::createEdgeImage(){
+
+void ImpressionistDoc::switchOriginalImage(){
+
+	m_ucBitmap = m_nOrginalBitmap;
+	m_pUI->m_origView->refresh();
+
+}
+void ImpressionistDoc::createAndSwitchEdgeImage(){
+
 	
 	unsigned char* edge_image = new unsigned char[m_nWidth*m_nHeight*3];
 	for (int i = 0; i < m_nWidth; i += 1){
@@ -287,7 +356,20 @@ void ImpressionistDoc::createEdgeImage(){
 			255 * (m_nSobel_val[index] >= getEdgeThreshold());
 		}
 	}
+	// update the new edge image
 	m_ucBitmap = edge_image;
+	m_pUI->m_origView->refresh();
+
+	// store the new edge image
+	if(m_nEdgeImage) delete [] m_nEdgeImage;
+	m_nEdgeImage = edge_image;
+
+
+
+}
+void ImpressionistDoc::switchAnotherImage(){
+
+	m_ucBitmap = m_nAnotherImage;
 	m_pUI->m_origView->refresh();
 
 }
