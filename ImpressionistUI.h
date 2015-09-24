@@ -17,6 +17,8 @@
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl_Check_Button.H>
+#include <FL/Fl_Int_Input.H>
+#include <vector>
 
 #include "Impressionist.h"
 #include "OriginalView.h"
@@ -58,6 +60,15 @@ public:
 	// for color dialog
 	Fl_Window*			m_colorsDialog;
 	Fl_Color_Chooser*	m_colorChooser;
+
+	// for filter kernal
+	Fl_Window*			m_filterSizeDialog;
+	Fl_Int_Input*		m_filterWidthInput;
+	Fl_Int_Input*		m_filterHeightInput;
+	Fl_Button*			m_filterSizeSetButton;
+	Fl_Window*			m_filterKernalDialog;
+	std::vector<Fl_Input *> m_filterKernalEntries;
+	Fl_Button*			m_applyFilterKernalButton;
 
 	// Member functions
 	void				setDocument(ImpressionistDoc* doc);
@@ -102,6 +113,11 @@ private:
 	int     m_nSpace;
 	int     m_nEdgeThreshold;
 
+	int		m_nFilterWidth;
+	int		m_nFilterHeight;
+
+	double* m_dFilterKernal;
+
 	boolean m_is_edge_clipping;
 	boolean m_is_another_gradient;
 	boolean m_is_size_rand;
@@ -127,6 +143,7 @@ private:
 	static void cb_colors(Fl_Menu_ *o, void *v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
 	static void cb_undo(Fl_Menu_ *o, void *v);
+	static void cb_filterKernal(Fl_Menu_ *o, void *v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
@@ -144,6 +161,8 @@ private:
 	static void cb_sizeRand(Fl_Widget *o, void *v);
 	static void cb_paintButton(Fl_Widget *o, void *v);
 	static void cb_doItButton(Fl_Widget *o, void *v);
+	static void cb_setFilterKernalSize(Fl_Widget *o, void *v);
+	static void cb_applyFilterKernal(Fl_Widget *o, void *v);
 	static void cb_orginal_image(Fl_Menu_* o, void* v);
 	static void cb_edge_image(Fl_Menu_* o, void* v);
 	static void cb_another_image(Fl_Menu_* o, void* v);

@@ -50,6 +50,8 @@ public:
 
 	void paintCanvas(int space);
 
+	void applyFilterKernal();
+
 // Attributes
 public:
 	// Dimensions of original window.

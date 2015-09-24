@@ -444,3 +444,7 @@ int* ImpressionistDoc::calSobelVal(double* gray_image, int width, int height){
 	}
 	return sobel_val;
 }
+
+void ImpressionistDoc::applyFilterKernal() {
+	
+}

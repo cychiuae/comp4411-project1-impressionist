@@ -263,7 +263,6 @@ void ImpressionistUI::cb_orginal_image(Fl_Menu_* o, void* v)
 
 }
 
-
 void ImpressionistUI::cb_edge_image(Fl_Menu_* o, void* v)
 {
 	ImpressionistDoc* pDoc=whoami(o)->getDocument();
@@ -276,7 +275,11 @@ void ImpressionistUI::cb_another_image(Fl_Menu_* o, void* v)
 	pDoc->switchAnotherImage();
 }
 
-
+void ImpressionistUI::cb_filterKernal(Fl_Menu_ *o, void *v) {
+	whoami(o)->m_filterHeightInput->value("1");
+	whoami(o)->m_filterWidthInput->value("1");
+	whoami(o)->m_filterSizeDialog->show();
+}
 
 
 //-----------------------------------------------------------
@@ -427,8 +430,6 @@ void ImpressionistUI::cb_paintButton(Fl_Widget *o, void *v) {
 
 }
 
-
-
 void ImpressionistUI::cb_doItButton(Fl_Widget *o, void *v) {
 	ImpressionistUI *pUI = ((ImpressionistUI*)(o->user_data()));
 	pUI->getDocument()->createEdgeImage();
@@ -439,10 +440,46 @@ void ImpressionistUI::cb_colorSelects(Fl_Widget *o, void *v) {
 	((ImpressionistUI*)(o->user_data()))->m_nRed = double(((Fl_Color_Chooser *)o)->r());
 	((ImpressionistUI*)(o->user_data()))->m_nGreen = double(((Fl_Color_Chooser *)o)->g());
 	((ImpressionistUI*)(o->user_data()))->m_nBlue = double(((Fl_Color_Chooser *)o)->b());
-	printf("Red: %.02f | Green: %.02f | Blue: %.02f\n", 
-		((ImpressionistUI*)(o->user_data()))->m_nRed, 
-		((ImpressionistUI*)(o->user_data()))->m_nGreen, 
-		((ImpressionistUI*)(o->user_data()))->m_nBlue);
+}
+
+void ImpressionistUI::cb_setFilterKernalSize(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI = (ImpressionistUI*)o->user_data();
+	int width = atoi(pUI->m_filterWidthInput->value());
+	int height = atoi(pUI->m_filterHeightInput->value());
+	if (width <= 0 || height <= 0) {
+		fl_message("Width or Height cannot be less than 0");
+		return;
+	} else {
+		pUI->m_filterSizeDialog->hide();
+		pUI->m_nFilterWidth = width;
+		pUI->m_nFilterHeight = height;
+		pUI->m_filterKernalDialog = new Fl_Window(60 + 30 * width + 10 * (width - 1), 60 + 30 * width + 10 * (width - 1) + 50, "Filter Kernal");
+		pUI->m_filterKernalEntries.clear();
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				Fl_Input *filterEntry = new Fl_Input(60 + 30 * i + 10 * i, 30 * j + 10 * j, 30, 30, "");
+				filterEntry->value("1.0");
+				pUI->m_filterKernalEntries.push_back(filterEntry);
+			}
+		}
+		pUI->m_applyFilterKernalButton = new Fl_Button(0, 60 + 30 * width + 10 * (width - 1) + 20, 50, 20, "Apply");
+		pUI->m_applyFilterKernalButton->user_data((void *)(pUI));
+		pUI->m_applyFilterKernalButton->callback(cb_applyFilterKernal);
+		pUI->m_filterKernalDialog->end();
+		pUI->m_filterKernalDialog->show();
+	}
+}
+
+void ImpressionistUI::cb_applyFilterKernal(Fl_Widget *o, void *v) {
+	ImpressionistUI *pUI = (ImpressionistUI*)o->user_data();
+	pUI->m_dFilterKernal = new double[pUI->m_nFilterWidth * pUI->m_nFilterHeight];
+	for (int j = 0; j < pUI->m_nFilterHeight; j++) {
+		for (int i = 0; i < pUI->m_nFilterWidth; i++) {
+			printf(pUI->m_filterKernalEntries[i + j * pUI->m_nFilterHeight]->value());
+			pUI->m_dFilterKernal[i + j * pUI->m_nFilterHeight] = atof(pUI->m_filterKernalEntries[i + j * pUI->m_nFilterHeight]->value());
+		}
+	}
+	pUI->getDocument()->applyFilterKernal();
 }
 
 //---------------------------------- per instance functions --------------------------------------
@@ -579,10 +616,11 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Load Another Image...",	FL_ALT + 't', (Fl_Callback *)ImpressionistUI::cb_load_another_image },
 		{ "&Load Edge Image...",	FL_ALT + 'f', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
 		{ "&Swap",	                FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_swap },
-		{ "&Brushes...",	        FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
+		{ "&Brushes...",	        FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes },
+		{ "&Undo...", FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo },
 		{ "&Clear Canvas",          FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		{ "&Colors...",             FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_colors },
-		{ "&Undo...",               FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo },
+		{ "&Filter Kernal...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_filterKernal },
 		{ "&Quit",			        FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },
 	// TODO: Add menu callback
@@ -669,6 +707,8 @@ ImpressionistUI::ImpressionistUI() {
 	m_is_another_gradient = 0;
 	m_is_size_rand = 1;
 	m_isPaint = false;
+	m_nFilterHeight = 1;
+	m_nFilterHeight = 1;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(400, 325, "Brush Dialog");
@@ -811,4 +851,19 @@ ImpressionistUI::ImpressionistUI() {
 	m_colorChooser->rgb(1.0f, 1.0f, 1.0f);
 	m_colorChooser->callback(cb_colorSelects);
 	m_colorsDialog->end();
+
+	// Filter Kernal
+	m_filterSizeDialog = new Fl_Window(300, 300, "Filter Size");
+	m_filterWidthInput = new Fl_Int_Input(55, 10, 100, 30, "Width:");
+	m_filterWidthInput->labelfont(FL_COURIER);
+	m_filterWidthInput->labelsize(12);
+	m_filterWidthInput->value("1");
+	m_filterHeightInput = new Fl_Int_Input(55, 70, 100, 30, "Height:");
+	m_filterHeightInput->labelfont(FL_COURIER);
+	m_filterHeightInput->labelsize(12);
+	m_filterHeightInput->value("1");
+	m_filterSizeSetButton = new Fl_Button(50, 130, 50, 24, "Set");
+	m_filterSizeSetButton->user_data((void *)(this));
+	m_filterSizeSetButton->callback(cb_setFilterKernalSize);
+	m_filterSizeDialog->end();
 }
