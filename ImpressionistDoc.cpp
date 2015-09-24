@@ -200,6 +200,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_pUI->m_paintView->resizeWindow(width, height);	
 	m_pUI->m_paintView->refresh();
 
+	m_nMode = SHOW_ORIGINAL_IMAGE;
 
 	return 1;
 }
@@ -227,6 +228,8 @@ int ImpressionistDoc::loadEdgeImage(char *iname)
 
 	m_nEdgeImage = data;
 
+	m_nMode = SHOW_EDGE_IMAGE;
+
 	return 1;
 }
 int ImpressionistDoc::loadAnotherImage(char *iname) 
@@ -250,7 +253,7 @@ int ImpressionistDoc::loadAnotherImage(char *iname)
 
 	if ( m_nAnotherImage ) delete [] m_nAnotherImage;
 
-
+	m_nMode = SHOW_ANOTHER_IMAGE;
 	m_nAnotherImage = data;
 
 	return 1;
@@ -344,10 +347,9 @@ void ImpressionistDoc::paintCanvas(int space) {
 //----------------------------------------------------------------
 
 void ImpressionistDoc::switchOriginalImage(){
-
-	m_ucBitmap = m_nOrginalBitmap;
+	//m_ucBitmap = m_nOrginalBitmap;
+	m_nMode = SHOW_ORIGINAL_IMAGE;
 	m_pUI->m_origView->refresh();
-
 }
 void ImpressionistDoc::createEdgeImage(){
 
@@ -368,14 +370,14 @@ void ImpressionistDoc::createEdgeImage(){
 
 }
 void ImpressionistDoc::switchEdgeImage(){
-
-	m_ucBitmap = m_nEdgeImage;
+	//m_ucBitmap = m_nEdgeImage;
+	m_nMode = SHOW_EDGE_IMAGE;
 	m_pUI->m_origView->refresh();
-
 }
 void ImpressionistDoc::switchAnotherImage(){
 
-	m_ucBitmap = m_nAnotherImage;
+	//m_ucBitmap = m_nAnotherImage;
+	m_nMode = SHOW_ANOTHER_IMAGE;
 	m_pUI->m_origView->refresh();
 
 }

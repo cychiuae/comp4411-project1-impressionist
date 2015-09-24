@@ -11,6 +11,10 @@
 #include "bitmap.h"
 #include <vector>
 
+#define SHOW_ORIGINAL_IMAGE 0
+#define SHOW_EDGE_IMAGE 1
+#define SHOW_ANOTHER_IMAGE 2
+
 class ImpressionistUI;
 
 class ImpressionistDoc 
@@ -76,6 +80,9 @@ public:
 	int m_pStrokeDirection;
 
 	ImpressionistUI*	m_pUI;
+
+	// Mode
+	int m_nMode;
 
 // Operations
 public:

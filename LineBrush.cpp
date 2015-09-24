@@ -63,7 +63,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 					Point point = Point(target.x + row - 1, target.y + col - 1);
 					GLubyte color[3];
 					memcpy(color, pDoc->GetOriginalPixel(point), 3);
-					grids[row][col] = 0.299*color[0] + 0.587*color[1] + 0.114*color[2];
+					grids[row][col] = 0.25*color[0] + 0.5*color[1] + 0.25*color[2];
 
 				}
 			}
