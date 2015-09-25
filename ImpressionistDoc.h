@@ -14,6 +14,7 @@
 #define SHOW_ORIGINAL_IMAGE 0
 #define SHOW_EDGE_IMAGE 1
 #define SHOW_ANOTHER_IMAGE 2
+#define SHOW_DISSOLVE_IMAGE 3
 
 class ImpressionistUI;
 
@@ -27,6 +28,7 @@ public:
 	int		loadImage(char *iname);			// called by the UI to load image
 	int		loadAnotherImage(char *iname);			// called by the UI to load image
 	int		loadEdgeImage(char *iname);			// called by the UI to load image
+	int		loadDissolveImage(char *iname);
 	int		swapImage();			// called by the UI to load image
 	int		saveImage(char *iname);			// called by the UI to save image
 
@@ -66,6 +68,7 @@ public:
 	unsigned char*  m_nOrginalBitmap;
 	unsigned char*  m_nEdgeImage;
 	unsigned char*  m_nAnotherImage;
+	unsigned char*	m_nDissolveImage;
 
 	// Values for generate the gray and sobel image
 	double*         m_nGray_val;
@@ -92,6 +95,7 @@ public:
 	GLubyte*  GetOriginalPixel( int x, int y );   
 	// Get the color of the original picture at the specified point	
 	GLubyte*  GetOriginalPixel( const Point p );  
+	void	  createDissolveImage(unsigned char* data, int width, int height);
 	void      createEdgeImage();
 	void      switchOriginalImage();
 	void      switchEdgeImage();

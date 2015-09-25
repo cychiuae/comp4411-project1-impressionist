@@ -200,6 +200,16 @@ void ImpressionistUI::cb_load_edge_image(Fl_Menu_* o, void* v){
 		pDoc->loadEdgeImage(newfile);
 	}
 }
+
+void ImpressionistUI::cb_load_dissolve_image(Fl_Menu_* o, void* v) {
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadDissolveImage(newfile);
+	}
+}
+
 void ImpressionistUI::cb_swap(Fl_Menu_* o, void* v){
 	ImpressionistDoc *pDoc = whoami(o)->getDocument();
 	pDoc->swapImage();
@@ -627,6 +637,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Save Image...",	        FL_ALT + 's', (Fl_Callback *)ImpressionistUI::cb_save_image },
 		{ "&Load Another Image...",	FL_ALT + 't', (Fl_Callback *)ImpressionistUI::cb_load_another_image },
 		{ "&Load Edge Image...",	FL_ALT + 'f', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
+		{ "&Load Dissolve Image...", FL_ALT + 'f', (Fl_Callback *)ImpressionistUI::cb_load_dissolve_image },
 		{ "&Swap",	                FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_swap },
 		{ "&Brushes...",	        FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes },
 		{ "&Undo...", FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo },

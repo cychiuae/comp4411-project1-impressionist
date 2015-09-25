@@ -37,7 +37,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_nOrginalBitmap   = NULL;
 	m_nEdgeImage       = NULL;
 	m_nAnotherImage    = NULL;
-
+	m_nDissolveImage   = NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -168,12 +168,14 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_nSobel_val )    delete [] m_nSobel_val;
 	if ( m_nEdgeImage )    delete [] m_nEdgeImage;
 	if ( m_nAnotherImage ) delete [] m_nAnotherImage;
+	if (m_nDissolveImage) delete[] m_nDissolveImage;
 
 	m_ucPainting_History.clear();
 
 	m_ucBitmap		 = data;
 	m_nOrginalBitmap = data; // backup the original bitmap
 	m_nAnotherImage  = new unsigned char[m_nWidth*m_nHeight*3];
+	m_nDissolveImage = new unsigned char[m_nWidth*m_nHeight * 3];
 	memcpy(m_nAnotherImage, data, width*height*3);
 
 	// cal the gray and sobel value of image for create the edge image
@@ -258,6 +260,43 @@ int ImpressionistDoc::loadAnotherImage(char *iname)
 
 	return 1;
 }
+
+int ImpressionistDoc::loadDissolveImage(char *iname) {
+	// try to open the image to read
+	unsigned char*	data;
+	int				width,
+		height;
+
+
+	if ((data = readBMP(iname, width, height)) == NULL)
+	{
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+
+	createDissolveImage(data, width, height);
+	m_nMode = SHOW_DISSOLVE_IMAGE;
+	m_pUI->m_origView->refresh();
+	return 1;
+}
+
+void ImpressionistDoc::createDissolveImage(unsigned char* data, int width, int height) {
+	if (!m_ucBitmap || !data) {
+		return;
+	}
+	memcpy(m_nDissolveImage, m_ucBitmap, m_nWidth * m_nHeight * 3);
+	for (int i = 0; i < m_nWidth; i++){
+		int j = i % 2;
+		for (; j < m_nHeight; j += 2){
+			int x = i % width;
+			int y = j % height;
+			for (int k = 0; k < 3; k++) {
+				m_nDissolveImage[((m_nHeight - j) * m_nWidth + i) * 3 + k] = data[((height - y) * width + x) * 3 + k];
+			}
+		}
+	}
+}
+
 int ImpressionistDoc::swapImage() 
 {
 	if(!m_ucBitmap || !m_ucPainting) return 0;
@@ -486,6 +525,7 @@ double ImpressionistDoc::applyFilter(int x, int y, int rgbChannel) {
 			weightSum += filterKernal[m * filterWidth + n];
 		}
 	}
-
+	weightSum = weightSum == 0 ? 1 : weightSum;
+	weightSum = weightSum < 0 ? -weightSum : weightSum;
 	return result / weightSum;
 }
