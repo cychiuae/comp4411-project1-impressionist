@@ -447,4 +447,45 @@ int* ImpressionistDoc::calSobelVal(double* gray_image, int width, int height){
 
 void ImpressionistDoc::applyFilterKernal() {
 	
+	unsigned char* filteredImage = new unsigned char[m_nWidth * m_nHeight * 3];
+	memset(filteredImage, 0, m_nWidth * m_nHeight * 3);
+
+	for (int i = 0; i < m_nHeight; i++) {
+		for (int j = 0; j < m_nWidth; j++) {
+			int position = (i * m_nWidth + j) * 3;
+			for (int k = 0; k < 3; k++) {
+				filteredImage[position + k] = applyFilter(j, i, k);
+			}
+		}
+	}
+
+	m_ucPainting = filteredImage;
+	m_pUI->m_paintView->refresh();
+}
+
+double ImpressionistDoc::applyFilter(int x, int y, int rgbChannel) {
+	const int filterWidth = m_pUI->getFilterWidth();
+	const int filterHeight = m_pUI->getFilterHeight();
+	double result = 0.0;
+	double weightSum = 0.0;
+	double* filterKernal = m_pUI->getFilterKernal();
+	int startX = x - filterWidth / 2;
+	int startY = y - filterHeight / 2;
+
+	for (int m = 0; m < filterHeight; m++) {
+		int y = m + startY;
+		if (y < 0 || y >= m_nHeight) {
+			continue;
+		}
+		for (int n = 0; n < filterWidth; n++) {
+			int x = n + startX;
+			if (x < 0 || x >= m_nWidth) {
+				continue;
+			}
+			result += (double)(m_ucBitmap[(y * m_nWidth + x) * 3 + rgbChannel]) * filterKernal[m * filterWidth + n];
+			weightSum += filterKernal[m * filterWidth + n];
+		}
+	}
+
+	return result / weightSum;
 }

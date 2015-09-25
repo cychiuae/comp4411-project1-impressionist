@@ -608,6 +608,18 @@ double ImpressionistUI::getBlue() {
 	return m_nBlue;
 }
 
+int ImpressionistUI::getFilterHeight() {
+	return m_nFilterHeight;
+}
+
+int ImpressionistUI::getFilterWidth() {
+	return m_nFilterWidth;
+}
+
+double* ImpressionistUI::getFilterKernal() {
+	return m_dFilterKernal;
+}
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },

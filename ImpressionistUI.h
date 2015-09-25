@@ -103,6 +103,9 @@ public:
 	double				getGreen();
 	double				getBlue();
 
+	int					getFilterWidth();
+	int					getFilterHeight();
+	double*				getFilterKernal();
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
 
