@@ -286,8 +286,7 @@ void ImpressionistDoc::createDissolveImage(unsigned char* data, int width, int h
 	}
 	memcpy(m_nDissolveImage, m_ucBitmap, m_nWidth * m_nHeight * 3);
 	for (int i = 0; i < m_nWidth; i++){
-		int j = i % 2;
-		for (; j < m_nHeight; j += 2){
+		for (int j = i % 2; j < m_nHeight; j += 2){
 			int x = i % width;
 			int y = j % height;
 			for (int k = 0; k < 3; k++) {

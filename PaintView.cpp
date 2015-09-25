@@ -195,11 +195,26 @@ int PaintView::handle(int event)
 	case FL_DRAG:
 		coord.x = Fl::event_x();
 		coord.y = Fl::event_y();
+		isAnEvent = 1;
 		if (Fl::event_button()>1)
 			eventToDo=RIGHT_MOUSE_DRAG;
-		else
-			eventToDo=LEFT_MOUSE_DRAG;
-		isAnEvent=1;
+		else {
+			eventToDo = LEFT_MOUSE_DRAG;
+		}
+
+		if (coord.x <= 0) {
+			coord.x = 0;
+		}
+		if (coord.x >= m_pDoc->m_nWidth) {
+			coord.x = m_pDoc->m_nWidth;
+		}
+		if (coord.y <= 0) {
+			coord.y = 0;
+		}
+		if (coord.y >= m_pDoc->m_nHeight) {
+			coord.y = m_pDoc->m_nHeight - 10;
+		}
+
 		redraw();
 		m_pDoc->m_pUI->m_origView->moveCursor(Point(coord.x, coord.y));		
 		break;

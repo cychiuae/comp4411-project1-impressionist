@@ -100,6 +100,7 @@ public:
 	void      switchOriginalImage();
 	void      switchEdgeImage();
 	void      switchAnotherImage();
+	
 	double*   calGrayVal(int width, int height);
 	int*      calSobelVal(double* gray_image, int width, int height);
 	double	  applyFilter(int x, int y, int rgbChannel);
